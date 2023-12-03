@@ -1,0 +1,606 @@
+* My personal Emacs config
+
+This is my configuration for Emacs, both on my Ubuntu PC, Arch-running-ex-chromebook and work Windows laptop.
+There are some differences between the configs for the different machines, so I have several versions being tangled from this config.
+
+I would say this is fairly close to a vanilla Emacs. Once I get something working fairly well, I'm usually happy with it, and don't feel the need to tinker anymore. Most of packages I only use with the most basic setup, because that's fine for me.
+Some inspiration comes from David Wilson's wonderful /Emacs from scratch/ https://github.com/daviwil/emacs-from-scratch, developed live on his [[https://consent.youtube.com/m?continue=https%3A%2F%2Fwww.youtube.com%2Fc%2FSystemCrafters%3Fcbrd%3D1&gl=NO&m=0&pc=yt&cm=2&hl=en&src=1][YouTube]].
+
+I decided to make a literate config file mostly because of the different versions I need for my different machines, and this makes it easier to keep track of them. 
+
+** MELPA and USE-PACKAGE
+Melpa and use-package for installing and handling packages
+
+#+name: melpa 
+#+begin_src elisp
+;; Enables basic packaging support
+(require 'package)
+
+;; MELPA
+;; Adds the Melpa archive to the list of available repositories
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/")
+	     '("gnu" . "https://elpa.gnu.org/packages/")
+	     )
+
+;; Initializes the package infrastructure
+(package-initialize)
+
+;; USE-PACKAGE
+;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+#+end_src
+
+** MAGIT
+For GIT straight from Emacs, because Magit is the best.
+
+#+name: magit
+#+begin_src elisp
+;; MAGIT
+(use-package magit
+  :ensure t)
+#+end_src
+
+** DEFT
+Deft allows to seach through a "deft folder" and all the files in it, which is very nice to have for my notes, i.e. my Zettelkasten.
+
+Since the Deft directory will be different on different machines, I pass this as a variable.
+I set up which file extensions should be included.
+Also bind deft to f8 for quick access.
+The special function there is something I found online. I will need to check where. It works with org-roam files to display the correct title.
+There is also another small modification to leave out the property box from the summary. 
+
+#+name: deft
+#+begin_src elisp :var deft-dir="~/Documents/TheNotes/"
+;; DEFT
+(use-package deft
+	     :ensure t
+	     :custom
+	     ((deft-directory deft-dir)
+	      (deft-extensions '("org" "txt" "tex" "md"))
+	      (deft-recursive t)
+	      )
+	     :config
+	     (global-set-key [f8] 'deft)
+	     )
+
+(defun nori/deft-parse-title (file contents)
+    "Parse the given FILE and CONTENTS and determine the title.
+  If `deft-use-filename-as-title' is nil, the title is taken to
+  be the first non-empty line of the FILE.  Else the base name of the FILE is
+  used as title."
+      (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
+	(if begin
+	    (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
+	  (deft-base-filename file))))
+  
+(advice-add 'deft-parse-title :override #'nori/deft-parse-title)
+  
+(setq deft-strip-summary-regexp
+      (concat "\\("
+	      "[\n\t]" ;; blank
+	      "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
+	      "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
+	      "\\)"))
+#+end_src
+
+** ORG AGENDA
+Setting up which files and folders are used for the agenda.
+I actually have a lot of them here.
+These will be different for different machines, so again passing in the variable.
+
+
+#+name: org-agenda
+#+begin_src elisp :var agenda-files=(list "~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output"))
+;; ORG AGENDA
+;;(setq org-agenda-files (list "~/Documents/TheNotes/20230228174603-stream.org"
+;;			     "~/Documents/TheNotes/output"))
+(setq org-agenda-files agenda-files)
+(setq org-log-done 'time)
+(global-set-key (kbd "C-c a t") 'org-todo-list)
+#+end_src
+
+** ORG-BABEL
+I mostly only use org-bable for shell, elisp and python. I don't code in python on the chromebook, but it's still nice to have the right syntax highlighting and all. 
+
+#+name: org-babel
+#+begin_src elisp
+;; ORG-BABEL
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   (shell . t)
+   (emacs-lisp . t)))
+
+
+;; to syntax highlight code in babel and to remove the "Do you want to execute?" question
+(setq org-confirm-babel-evaluate nil
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-src-preserve-indentation t
+      )
+(setq python-indent-guess-indent-offset nil)
+(setq python-indent-offset 4)
+#+end_src
+
+** VERTICO (with ORDERLESS), MARGINALIA and EMBARK
+*** VERTICO
+Vertico is a completion framework. And also allows to write space in minibuffer, which doesn't work in out-of-the-box Emacs.
+#+name: vertico
+#+begin_src elisp
+;; VERTICO
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode)
+  :config
+(setq enable-recursive-minibuffers t))
+#+end_src
+
+*** ORDERLESS
+Allows for completion in any order.
+#+name: orderless
+#+begin_src elisp
+;; ORDERLESS
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+*** MARGINALIA
+Adds useful information to the minibuffer for each of the options.
+#+name: marginalia
+#+begin_src elisp
+;; MARGINALIA
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+#+end_src
+
+*** EMBARK
+Embark allows for a context menu, kind of like a right-click.
+#+name: embark
+#+begin_src elisp
+;; EMBARK
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act))         ;; pick some comfortable binding
+  )
+#+end_src
+
+** Things for my Zettelkasten -- ORG-ROAM, CITAR, CITAR-ORG-ROAM, CITAR-EMBARK, ORG-ROAM-UI
+*** ORG-ROAM
+Org-roam allows to build a linked database of notes. I use it for my Zettelkasten.
+
+To set it up, a roam directory needs to be defined, for me it's =TheNotes=.
+I also set up capture templates, which define templates for different types of my notes. I mostly have zettel (normal note), output (notes that go in their separate output folder and are things that I am planning to publish/share somewhere), input (are notes in input folder where I am capturing initial notes from external sources) and reference (input notes associated with a Zotero reference).
+
+The rest of the config is mostly standard. 
+#+name: org-roam
+#+begin_src elisp :var roam-dir="~/Documents/TheNotes/"
+;; ORG-ROAM
+(use-package org-roam
+	     :ensure t
+	     :custom
+	     (org-roam-directory roam-dir)
+	     (org-roam-completion-everywhere t)
+	     (org-roam-capture-templates
+	      '(("d" "default" plain
+		 "%?"
+		 :target
+		 (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+		:unnarrowed t)
+		("z" "zettel" plain
+		"%?"
+		:target
+		(file+head "zettel/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+		:unnarrowed t)
+	       	("o" "output" plain
+		"%?"
+		:target
+		(file+head "output/%<%Y%m%d%H%M%S>-O-${slug}.org" "#+title: O-${title}\n#+filetags: :output")
+		:unnarrowed t)
+  	        ("i" "input" plain
+		"%?"
+		:target
+		(file+head "input/%<%Y%m%d%H%M%S>-I-${slug}.org" "#+title: I-${title}\n#+filetags: :input")
+		:unnarrowed t)
+	        ("r" "reference" plain
+		"%?"
+		:target
+		(file+head "%(expand-file-name \"input\" org-roam-directory)/%<%Y%m%d%H%M%S>-I-${citekey}.org" "#+title: I-${citekey}\n#+filetags: :input")
+		:unnarrowed t)
+		)
+	      )
+	     :bind (("C-c n l" . org-roam-buffer-toggle)
+		    ("C-c n f" . org-roam-node-find)
+		    ("C-c n i" . org-roam-node-insert)
+		    ("C-M-i" . completion-at-point))
+	     :config
+	     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
+	     (org-roam-db-autosync-mode t)
+
+	     )
+#+end_src
+
+*** Citations with CITAR and CITAR-ORG-ROAM
+**** CITAR
+Citar for citations, using an exported bibliography from Zotero. Binding insertion of reference to "C-c b".
+#+name: citar
+#+begin_src elisp :var bib-file="/home/nori/Documents/TheNotes/biblio.bib"
+;; CITAR
+(use-package citar
+  :ensure t
+  :custom
+  (citar-bibliography '(bib-file))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  :bind
+  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
+  )
+#+end_src
+
+**** CITAR-ORG-ROAM
+Citar org roam allows to use my roam capture template to make a note from a reference.
+I am loading the package later though. 
+#+name: citar-org-roam
+#+begin_src elisp
+;; CITAR-ORG-ROAM
+(use-package citar-org-roam
+  :ensure t
+  :after citar org-roam
+  :no-require t
+  :config
+  (setq citar-org-roam-capture-template-key "r")
+  )
+#+end_src
+
+**** CITAR-EMBARK
+#+name: citar-embark
+#+begin_src elisp
+(use-package citar-embark
+  :ensure t
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
+#+end_src
+
+*** ORG-ROAM-UI
+Org-roam-ui creates a graph view of my notes and shows it in the browser.
+#+name: org-roam-ui
+#+begin_src elisp
+;; ORG-ROAM-UI
+(use-package org-roam-ui
+  :ensure t
+  :after org-roam)
+(require 'org-roam-ui)
+#+end_src
+
+** OX-HUGO
+Ox-hugo is an interface with Hugo, a system for making static sites. 
+#+name: ox-hugo
+#+begin_src elisp
+;; OX-HUGO
+(use-package ox-hugo
+  :ensure t
+  :pin melpa
+  :after ox
+  )
+#+end_src
+
+** ORG-PREVIEW-HTML
+A package for previewing output HTML from a org-mode files. 
+#+name: org-preview-html
+#+begin_src elisp
+;; ORG-PREVIEW-HTML
+(use-package org-preview-html
+  :ensure t
+  )
+(require 'org-preview-html)
+#+end_src
+
+** THEME
+I use modus themes from Protesilaos and like them. 
+#+name: theme
+#+begin_src elisp
+;; THEME
+(require 'modus-themes)
+
+(load-theme 'modus-operandi t)
+
+(define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+#+end_src
+
+** EXWM
+On my chromearch, I only have a very very barebones installation of Arch, because the thing is a brick. So Emacs also doubles as a "desktop". I obviously use EXWM for that.
+
+I mostly followed the configuration example https://github.com/ch11ng/exwm/wiki/Configuration-Example, with some small changes. Like adding a system tray. 
+
+#+name: exwm
+#+begin_src elisp
+;; EXWM
+
+;; Disable menu-bar, tool-bar and scroll-bar to increase the usable space.
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+;; Also shrink fringes to 1 pixel.
+(fringe-mode 1)
+
+;; Turn on `display-time-mode' if you don't use an external bar.
+(setq display-time-default-load-average nil)
+(display-time-mode t)
+
+;;;; Below are configurations for EXWM.
+
+;; Load EXWM.
+(require 'exwm)
+
+;; System tray
+(require 'exwm-systemtray)
+(exwm-systemtray-enable)
+;;(setq exwm-systemtray-height 30)
+
+;; Set the initial number of workspaces (they can also be created later).
+(setq exwm-workspace-number 4)
+
+;; All buffers created in EXWM mode are named "*EXWM*". You may want to
+;; change it in `exwm-update-class-hook' and `exwm-update-title-hook', which
+;; are run when a new X window class name or title is available.  Here's
+;; some advice on this topic:
+;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
+;; + For applications with multiple windows (e.g. GIMP), the class names of
+;    all windows are probably the same.  Using window titles for them makes
+;;   more sense.
+;; In the following example, we use class names for all windows except for
+;; Java applications and GIMP.
+(add-hook 'exwm-update-class-hook
+          (lambda ()
+            (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                        (string= "gimp" exwm-instance-name))
+              (exwm-workspace-rename-buffer exwm-class-name))))
+(add-hook 'exwm-update-title-hook
+          (lambda ()
+            (when (or (not exwm-instance-name)
+                      (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                      (string= "gimp" exwm-instance-name))
+              (exwm-workspace-rename-buffer exwm-title))))
+
+;; Global keybindings can be defined with `exwm-input-global-keys'.
+;; Here are a few examples:
+(setq exwm-input-global-keys
+      `(
+        ;; Bind "s-r" to exit char-mode and fullscreen mode.
+        (,(kbd "C-c R") . exwm-reset)
+	;; Bind "C-c C-k" to enter char-mode
+	(,(kbd "C-c C-k") . exwm-input-release-keyboard)
+        ;; Bind "s-&" to launch applications ('M-&' also works if the output
+        ;; buffer does not bother you).
+        (,(kbd "C-c &") . (lambda (command)
+		     (interactive (list (read-shell-command "$ ")))
+		     (start-process-shell-command command nil command)))
+	))
+
+;; The following example demonstrates how to use simulation keys to mimic
+;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
+;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
+;; and DEST is what EXWM actually sends to application.  Note that both SRC
+;; and DEST should be key sequences (vector or string).
+(setq exwm-input-simulation-keys
+      '(
+        ;; movement
+        ([?\C-b] . [left])
+        ([?\M-b] . [C-left])
+        ([?\C-f] . [right])
+        ([?\M-f] . [C-right])
+        ([?\C-p] . [up])
+        ([?\C-n] . [down])
+        ([?\C-a] . [home])
+        ([?\C-e] . [end])
+        ([?\M-v] . [prior])
+        ([?\C-v] . [next])
+        ([?\C-d] . [delete])
+        ([?\C-k] . [S-end delete])
+        ;; cut/paste.
+        ([?\C-w] . [?\C-x])
+        ([?\M-w] . [?\C-c])
+        ([?\C-y] . [?\C-v])
+        ;; search
+        ([?\C-s] . [?\C-f])))
+
+;; Do not forget to enable EXWM. It will start by itself when things are
+;; ready.  You can put it _anywhere_ in your configuration.
+(exwm-enable)
+
+
+(start-process-shell-command "cbatticon" nil "cbatticon")
+
+#+end_src
+
+** Customizing
+
+*** A few things I always want
+Various settings that I always want.
+- Start citar-org-roam.
+- Allow for manual resizing of images in org.
+- Increase size of latex fragments.
+- Enable word wrap.
+- Use visual bell instead of the horrible sound.
+- Autosaving and reloading from disk comes from  https://whhone.com/emacs-config/#taking-note-with-org-roam.
+- Delete selection before pasting over also from https://whhone.com/emacs-config/#taking-note-with-org-roam.
+- Disable splash screen.
+- Smooth scrolling is from https://www.emacswiki.org/emacs/SmoothScrolling.
+
+#+name: custom1
+#+begin_src elisp
+;; ===================================
+;; Basic Customization
+;; ===================================
+;; Start citar-org-roam
+(citar-org-roam-mode t)
+
+;; Set org-image width to nil, so it can be set manually
+(setq org-image-actual-width nil)
+
+;; Increase size of LaTeX fragment previews
+(plist-put org-format-latex-options :scale 2)
+
+;; Enable word wrap
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
+;; Set visible bell instead of sound
+(setq visible-bell 1)
+
+;; Auto save buffer if idled for 2 seconds.
+(setq auto-save-timeout 2)
+(auto-save-visited-mode +1)
+
+;; Watch and reload the file changed on the disk.
+(global-auto-revert-mode +1)
+(setq auto-revert-remote-files t)
+
+;; Delete the selected text first before editing.
+(delete-selection-mode +1)
+
+;; Disable splash screen
+(setq inhibit-startup-message t)
+
+;; Smooth Scrolling
+(setq scroll-conservatively 10000
+      scroll-step 1)
+
+#+end_src
+
+*** MIXED-PITCH
+Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-mode/][Ricing org-mode]]), so I can have code and normal text in one file and the text looks nicer. But I am not using my own fonts here, just the modus-themes defaults.
+#+name: mixed-pitch
+#+begin_src elisp
+;; MIXED-PITCH
+(use-package mixed-pitch
+  :ensure t
+  :hook
+  (text-mode . mixed-pitch-mode)
+  ;;:config
+  ;;(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  ;;(set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
+  ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
+  )
+#+end_src
+
+*** A few optionals
+#+begin_src elisp
+;; Increase line spacing
+;;(setq-default line-spacing 6)
+
+;; Enable line numbers globally
+;;(global-linum-mode t)
+
+;; Start with inline images
+;;(setq org-startup-with-inline-images t)
+#+end_src
+
+*** Browser in WSL
+I used to have a thing for getting the right browser in WSL, but I don't use a WSL anymore
+#+name: wsl-browser
+#+begin_src elisp
+;; to get the right browser on wsl
+;;(setq browse-url-browser-function 'browse-url-generic
+;;      browse-url-generic-program "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+#+end_src
+
+
+** Chromearch config
+#+name: chromearch
+#+header: :var deft-dir="~/Documents/TheNotes/" :var agenda-files=(list "~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output")) :var roam-dir="~/Documents/TheNotes/" :var bib-file="/home/nori/Documents/TheNotes/biblio.bib" 
+#+begin_src elisp :tangle ~/.emacs.d/chromearch.el :noweb strip-export
+<<melpa>>
+<<magit>>
+;; deft needs deft-dir
+<<deft>>
+;; org-agenda needs agenda-files
+<<org-agenda>>
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+;; org-roam needs roam-dir
+<<org-roam>>
+;; citar needs bib-file
+<<citar>>
+<<citar-org-roam>>
+<<citar-embark>>
+;;<<org-roam-ui>>
+;;<<ox-hugo>>
+;;<<org-mode-preview-html>>
+<<theme>>
+<<exwm>>
+<<custom1>>
+<<mixed-pitch>>
+
+;; User-Defined init.el ends here
+#+end_src
+
+** Init.el file
+The only thing happening here is chosing which config to load, depending on which machine I am on.
+I figured the easiest was to distinguish them by the name of the computer.
+
+#+begin_src elisp :tangle ~/.emacs.d/init.el :noweb strip-export :results output
+  (cond
+   ((equal system-name "myarch")
+    (load "~/.emacs.d/chromearch.el")))
+#+end_src
+
+
+#+begin_src elisp 
+  (print (system-name))
+  (setq n (system-name))
+  (print n)
+  (cond
+   ((equal system-name "myarch")
+    (print system-name))
+   (t (print "no")))
+
+  ;;(cond
+     ;;((eq system-name 'myarch)
+      ;;(print system-name)
+      ;;(load "chromearch.el")
+	     ;;)
+     ;;((eq system-name 'som)
+      ;;(load "home.el"))
+     ;;((eq system-name 'some)
+      ;;(load "work.el"))
+	  ;;)
+#+end_src
+
+#+RESULTS:
+: 
+: "myarch"
+: 
+: "myarch"
+: 
+: "myarch"
+
+
+#+name: test_var
+#+begin_src elisp :var a=1
+(setq myvar a)f
+#+end_src
+
+#+RESULTS: test_var
+: 1
+
+#+begin_src elisp :noweb yes :var a=2
+<<test_var>>
+#+end_src
+
+#+RESULTS:
+: 2

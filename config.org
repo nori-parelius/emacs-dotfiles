@@ -43,6 +43,19 @@ For GIT straight from Emacs, because Magit is the best.
   :ensure t)
 #+end_src
 
+** CONDA
+To get conda environments
+#+name: conda
+#+begin_src elisp
+(use-package conda
+	     :ensure t
+	     :config
+	     ;; to add env name to mode line
+	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
+	     )
+(require 'conda)
+#+end_src
+
 ** DEFT
 Deft allows to seach through a "deft folder" and all the files in it, which is very nice to have for my notes, i.e. my Zettelkasten.
 
@@ -233,6 +246,8 @@ The rest of the config is mostly standard.
 *** Citations with CITAR and CITAR-ORG-ROAM
 **** CITAR
 Citar for citations, using an exported bibliography from Zotero. Binding insertion of reference to "C-c b".
+Do I need this org-cite one?
+(setq org-cite-global-bibliography '("/home/nori/Documents/TheNotes/biblio.bib"))
 #+name: citar
 #+begin_src elisp :var bib-file="/home/nori/Documents/TheNotes/biblio.bib"
 ;; CITAR
@@ -305,6 +320,28 @@ A package for previewing output HTML from a org-mode files.
   :ensure t
   )
 (require 'org-preview-html)
+#+end_src
+
+** LANGUAGETOOL
+Interfacing with languagetool for spelling and style check.
+I only have this one on my home coputer.
+#+name: languagetool
+#+begin_src elisp
+(use-package languagetool
+  :ensure t
+  :defer t
+  :commands (languagetool-check
+             languagetool-clear-suggestions
+             languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode
+             languagetool-server-start
+             languagetool-server-stop)
+  :config
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
+        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
 #+end_src
 
 ** THEME
@@ -523,6 +560,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 #+begin_src elisp :tangle ~/.emacs.d/chromearch.el :noweb strip-export
 <<melpa>>
 <<magit>>
+;;<<conda>>
 ;; deft needs deft-dir
 <<deft>>
 ;; org-agenda needs agenda-files
@@ -541,10 +579,45 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 ;;<<org-roam-ui>>
 ;;<<ox-hugo>>
 ;;<<org-mode-preview-html>>
+<<languagetool>>
 <<theme>>
 <<exwm>>
 <<custom1>>
 <<mixed-pitch>>
+
+;; User-Defined init.el ends here
+#+end_src
+
+** Home config
+#+name: home
+#+header: :var deft-dir="~/Documents/TheNotes/" :var agenda-files=(list "~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output")) :var roam-dir="~/Documents/TheNotes/" :var bib-file="/home/nori/Documents/TheNotes/biblio.bib" 
+#+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
+<<melpa>>
+<<magit>>
+<<conda>>
+<<deft>> ;; deft needs deft-dir
+<<org-agenda>> ;; org-agenda needs agenda-files
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+<<org-roam>> ;; org-roam needs roam-dir
+<<citar>> ;; citar needs bib-file
+<<citar-org-roam>>
+<<citar-embark>>
+<<org-roam-ui>>
+<<ox-hugo>>
+<<org-mode-preview-html>>
+<<languagetool>>
+<<theme>>
+;;<<exwm>>
+<<custom1>>
+<<mixed-pitch>>
+
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+(global-display-line-numbers-mode t)
 
 ;; User-Defined init.el ends here
 #+end_src
@@ -556,11 +629,15 @@ I figured the easiest was to distinguish them by the name of the computer.
 #+begin_src elisp :tangle ~/.emacs.d/init.el :noweb strip-export :results output
   (cond
    ((equal system-name "myarch")
-    (load "~/.emacs.d/chromearch.el")))
+    (load "~/.emacs.d/chromearch.el"))
+   ((equal system-name "nori-MS-7982")
+    (load "~/.emacs.d/home.el"))
+   ((equal system-name "work")
+    (load "")))
 #+end_src
 
 
-#+begin_src elisp 
+#+begin_src elisp :results output
   (print (system-name))
   (setq n (system-name))
   (print n)
@@ -583,11 +660,11 @@ I figured the easiest was to distinguish them by the name of the computer.
 
 #+RESULTS:
 : 
-: "myarch"
+: "nori-MS-7982"
 : 
-: "myarch"
+: "nori-MS-7982"
 : 
-: "myarch"
+: "no"
 
 
 #+name: test_var

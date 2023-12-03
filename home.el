@@ -23,14 +23,13 @@
 ;; MAGIT
 (use-package magit
   :ensure t)
-;;(use-package conda
-;;	     :ensure t
-;;	     :config
-;;	     ;; to add env name to mode line
-;;	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
-;;	     )
-;;(require 'conda)
-;; deft needs deft-dir
+(use-package conda
+	     :ensure t
+	     :config
+	     ;; to add env name to mode line
+	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
+	     )
+(require 'conda)
 ;; DEFT
 (use-package deft
 	     :ensure t
@@ -60,14 +59,13 @@
 	      "[\n\t]" ;; blank
 	      "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
 	      "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-	      "\\)"))
-;; org-agenda needs agenda-files
+	      "\\)")) ;; deft needs deft-dir
 ;; ORG AGENDA
 ;;(setq org-agenda-files (list "~/Documents/TheNotes/20230228174603-stream.org"
 ;;			     "~/Documents/TheNotes/output"))
 (setq org-agenda-files agenda-files)
 (setq org-log-done 'time)
-(global-set-key (kbd "C-c a t") 'org-todo-list)
+(global-set-key (kbd "C-c a t") 'org-todo-list) ;; org-agenda needs agenda-files
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -109,7 +107,6 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;; org-roam needs roam-dir
 ;; ORG-ROAM
 (use-package org-roam
 	     :ensure t
@@ -152,8 +149,7 @@
 	     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
 	     (org-roam-db-autosync-mode t)
 
-	     )
-;; citar needs bib-file
+	     ) ;; org-roam needs roam-dir
 ;; CITAR
 (use-package citar
   :ensure t
@@ -164,7 +160,7 @@
   (org-cite-activate-processor 'citar)
   :bind
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
-  )
+  ) ;; citar needs bib-file
 ;; CITAR-ORG-ROAM
 (use-package citar-org-roam
   :ensure t
@@ -178,18 +174,18 @@
   :after citar embark
   :no-require
   :config (citar-embark-mode))
-;;;; ORG-ROAM-UI
-;;(use-package org-roam-ui
-;;  :ensure t
-;;  :after org-roam)
-;;(require 'org-roam-ui)
-;;;; OX-HUGO
-;;(use-package ox-hugo
-;;  :ensure t
-;;  :pin melpa
-;;  :after ox
-;;  )
-;;
+;; ORG-ROAM-UI
+(use-package org-roam-ui
+  :ensure t
+  :after org-roam)
+(require 'org-roam-ui)
+;; OX-HUGO
+(use-package ox-hugo
+  :ensure t
+  :pin melpa
+  :after ox
+  )
+
 (use-package languagetool
   :ensure t
   :defer t
@@ -211,103 +207,103 @@
 (load-theme 'modus-operandi t)
 
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
-;; EXWM
-
-;; Disable menu-bar, tool-bar and scroll-bar to increase the usable space.
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-;; Also shrink fringes to 1 pixel.
-(fringe-mode 1)
-
-;; Turn on `display-time-mode' if you don't use an external bar.
-(setq display-time-default-load-average nil)
-(display-time-mode t)
-
-;;;; Below are configurations for EXWM.
-
-;; Load EXWM.
-(require 'exwm)
-
-;; System tray
-(require 'exwm-systemtray)
-(exwm-systemtray-enable)
-;;(setq exwm-systemtray-height 30)
-
-;; Set the initial number of workspaces (they can also be created later).
-(setq exwm-workspace-number 4)
-
-;; All buffers created in EXWM mode are named "*EXWM*". You may want to
-;; change it in `exwm-update-class-hook' and `exwm-update-title-hook', which
-;; are run when a new X window class name or title is available.  Here's
-;; some advice on this topic:
-;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
-;; + For applications with multiple windows (e.g. GIMP), the class names of
-;    all windows are probably the same.  Using window titles for them makes
-;;   more sense.
-;; In the following example, we use class names for all windows except for
-;; Java applications and GIMP.
-(add-hook 'exwm-update-class-hook
-          (lambda ()
-            (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                        (string= "gimp" exwm-instance-name))
-              (exwm-workspace-rename-buffer exwm-class-name))))
-(add-hook 'exwm-update-title-hook
-          (lambda ()
-            (when (or (not exwm-instance-name)
-                      (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                      (string= "gimp" exwm-instance-name))
-              (exwm-workspace-rename-buffer exwm-title))))
-
-;; Global keybindings can be defined with `exwm-input-global-keys'.
-;; Here are a few examples:
-(setq exwm-input-global-keys
-      `(
-        ;; Bind "s-r" to exit char-mode and fullscreen mode.
-        (,(kbd "C-c R") . exwm-reset)
-	;; Bind "C-c C-k" to enter char-mode
-	(,(kbd "C-c C-k") . exwm-input-release-keyboard)
-        ;; Bind "s-&" to launch applications ('M-&' also works if the output
-        ;; buffer does not bother you).
-        (,(kbd "C-c &") . (lambda (command)
-		     (interactive (list (read-shell-command "$ ")))
-		     (start-process-shell-command command nil command)))
-	))
-
-;; The following example demonstrates how to use simulation keys to mimic
-;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
-;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
-;; and DEST is what EXWM actually sends to application.  Note that both SRC
-;; and DEST should be key sequences (vector or string).
-(setq exwm-input-simulation-keys
-      '(
-        ;; movement
-        ([?\C-b] . [left])
-        ([?\M-b] . [C-left])
-        ([?\C-f] . [right])
-        ([?\M-f] . [C-right])
-        ([?\C-p] . [up])
-        ([?\C-n] . [down])
-        ([?\C-a] . [home])
-        ([?\C-e] . [end])
-        ([?\M-v] . [prior])
-        ([?\C-v] . [next])
-        ([?\C-d] . [delete])
-        ([?\C-k] . [S-end delete])
-        ;; cut/paste.
-        ([?\C-w] . [?\C-x])
-        ([?\M-w] . [?\C-c])
-        ([?\C-y] . [?\C-v])
-        ;; search
-        ([?\C-s] . [?\C-f])))
-
-;; Do not forget to enable EXWM. It will start by itself when things are
-;; ready.  You can put it _anywhere_ in your configuration.
-(exwm-enable)
-
-
-(start-process-shell-command "cbatticon" nil "cbatticon")
-
+;;;; EXWM
+;;
+;;;; Disable menu-bar, tool-bar and scroll-bar to increase the usable space.
+;;(menu-bar-mode -1)
+;;(tool-bar-mode -1)
+;;(scroll-bar-mode -1)
+;;;; Also shrink fringes to 1 pixel.
+;;(fringe-mode 1)
+;;
+;;;; Turn on `display-time-mode' if you don't use an external bar.
+;;(setq display-time-default-load-average nil)
+;;(display-time-mode t)
+;;
+;;;;;; Below are configurations for EXWM.
+;;
+;;;; Load EXWM.
+;;(require 'exwm)
+;;
+;;;; System tray
+;;(require 'exwm-systemtray)
+;;(exwm-systemtray-enable)
+;;;;(setq exwm-systemtray-height 30)
+;;
+;;;; Set the initial number of workspaces (they can also be created later).
+;;(setq exwm-workspace-number 4)
+;;
+;;;; All buffers created in EXWM mode are named "*EXWM*". You may want to
+;;;; change it in `exwm-update-class-hook' and `exwm-update-title-hook', which
+;;;; are run when a new X window class name or title is available.  Here's
+;;;; some advice on this topic:
+;;;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
+;;;; + For applications with multiple windows (e.g. GIMP), the class names of
+;;;    all windows are probably the same.  Using window titles for them makes
+;;;;   more sense.
+;;;; In the following example, we use class names for all windows except for
+;;;; Java applications and GIMP.
+;;(add-hook 'exwm-update-class-hook
+;;          (lambda ()
+;;            (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+;;                        (string= "gimp" exwm-instance-name))
+;;              (exwm-workspace-rename-buffer exwm-class-name))))
+;;(add-hook 'exwm-update-title-hook
+;;          (lambda ()
+;;            (when (or (not exwm-instance-name)
+;;                      (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+;;                      (string= "gimp" exwm-instance-name))
+;;              (exwm-workspace-rename-buffer exwm-title))))
+;;
+;;;; Global keybindings can be defined with `exwm-input-global-keys'.
+;;;; Here are a few examples:
+;;(setq exwm-input-global-keys
+;;      `(
+;;        ;; Bind "s-r" to exit char-mode and fullscreen mode.
+;;        (,(kbd "C-c R") . exwm-reset)
+;;	;; Bind "C-c C-k" to enter char-mode
+;;	(,(kbd "C-c C-k") . exwm-input-release-keyboard)
+;;        ;; Bind "s-&" to launch applications ('M-&' also works if the output
+;;        ;; buffer does not bother you).
+;;        (,(kbd "C-c &") . (lambda (command)
+;;		     (interactive (list (read-shell-command "$ ")))
+;;		     (start-process-shell-command command nil command)))
+;;	))
+;;
+;;;; The following example demonstrates how to use simulation keys to mimic
+;;;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
+;;;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
+;;;; and DEST is what EXWM actually sends to application.  Note that both SRC
+;;;; and DEST should be key sequences (vector or string).
+;;(setq exwm-input-simulation-keys
+;;      '(
+;;        ;; movement
+;;        ([?\C-b] . [left])
+;;        ([?\M-b] . [C-left])
+;;        ([?\C-f] . [right])
+;;        ([?\M-f] . [C-right])
+;;        ([?\C-p] . [up])
+;;        ([?\C-n] . [down])
+;;        ([?\C-a] . [home])
+;;        ([?\C-e] . [end])
+;;        ([?\M-v] . [prior])
+;;        ([?\C-v] . [next])
+;;        ([?\C-d] . [delete])
+;;        ([?\C-k] . [S-end delete])
+;;        ;; cut/paste.
+;;        ([?\C-w] . [?\C-x])
+;;        ([?\M-w] . [?\C-c])
+;;        ([?\C-y] . [?\C-v])
+;;        ;; search
+;;        ([?\C-s] . [?\C-f])))
+;;
+;;;; Do not forget to enable EXWM. It will start by itself when things are
+;;;; ready.  You can put it _anywhere_ in your configuration.
+;;(exwm-enable)
+;;
+;;
+;;(start-process-shell-command "cbatticon" nil "cbatticon")
+;;
 ;; ===================================
 ;; Basic Customization
 ;; ===================================
@@ -354,6 +350,10 @@
   ;;(set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
   ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
   )
+
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+(global-display-line-numbers-mode t)
 
 ;; User-Defined init.el ends here
 )

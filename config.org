@@ -624,8 +624,8 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 #+end_src
 
 ** Work config
-#+name: work
-#+header: :var deft-dir="C:/Users/ELPAR/MyDocuments/TheNotes" :var agenda-files=(list "C:/Users/ELPAR/MyDocuments/_WorkNotes" "C:/Users/ELPAR/MyDocuments/TheNotes/output")) :var roam-dir="C:/Users/ELPAR/MyDocuments/TheNotes" :var bib-file="C:/Users/ELPAR/MyDocuments/TheNotes/biblio.bib" 
+#+name: work C:\Users\ELPAR\TheNotes
+#+header: :var deft-dir="C:/Users/ELPAR/MyDocuments/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var agenda-files=(list "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_WorkNotes" "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/output")) :var roam-dir="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var bib-file="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib" 
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
 <<melpa>>
 <<magit>>
@@ -653,6 +653,8 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
+
+(setq package-install-upgrade-built-in t)
 
 ;; User-Defined init.el ends here
 #+end_src

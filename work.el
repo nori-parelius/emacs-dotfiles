@@ -1,7 +1,7 @@
-(let ((deft-dir '"C:/Users/ELPAR/MyDocuments/TheNotes")
-      (agenda-files '("C:/Users/ELPAR/MyDocuments/_WorkNotes" "C:/Users/ELPAR/MyDocuments/TheNotes/output"))
-      (roam-dir '"C:/Users/ELPAR/MyDocuments/TheNotes")
-      (bib-file '"C:/Users/ELPAR/MyDocuments/TheNotes/biblio.bib"))
+(let ((deft-dir '"C:/Users/ELPAR/MyDocuments/OneDrive - Forsvarets forskningsinstitutt/TheNotes")
+      (agenda-files '("C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_WorkNotes" "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/output"))
+      (roam-dir '"C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes")
+      (bib-file '"C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib"))
 ;; Enables basic packaging support
 (require 'package)
 
@@ -355,6 +355,8 @@
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
+
+(setq package-install-upgrade-built-in t)
 
 ;; User-Defined init.el ends here
 )

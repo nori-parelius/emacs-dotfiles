@@ -6,6 +6,7 @@ elpa/
 eshell/
 old_init.el
 .org-id-locations
+org-persist/
 org-roam.db
 server/
 session*

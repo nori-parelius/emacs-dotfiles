@@ -7,6 +7,7 @@ eshell/
 old_init.el
 .org-id-locations
 org-roam.db
+server/
 session*
 transient/
 .tresorit/

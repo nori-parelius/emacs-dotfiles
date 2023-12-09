@@ -184,12 +184,12 @@
 ;;  :ensure t
 ;;  :after org-roam)
 ;;(require 'org-roam-ui)
-;;;; OX-HUGO
-;;(use-package ox-hugo
-;;  :ensure t
-;;  :pin melpa
-;;  :after ox
-;;  )
+;; OX-HUGO
+(use-package ox-hugo
+  :ensure t
+  :pin melpa
+  :after ox
+  )
 ;;
 (use-package languagetool
   :ensure t

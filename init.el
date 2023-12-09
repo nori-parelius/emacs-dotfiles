@@ -5,16 +5,3 @@
     (load "~/.emacs.d/home.el"))
    ((equal system-name "MU386U")
     (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(mixed-pitch vertico org-roam-ui orderless modus-themes marginalia magit deft citar-org-roam citar-embark)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

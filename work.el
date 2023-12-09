@@ -154,8 +154,8 @@
 (use-package citar
   :ensure t
   :custom
-  (setq org-cite-global-bibliography '(bib-file))
-  (citar-bibliography '(bib-file))
+  (setq org-cite-global-bibliography bib-file)
+  (citar-bibliography bib-file)
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)

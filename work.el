@@ -266,7 +266,7 @@
 ;;	(,(kbd "C-c C-k") . exwm-input-release-keyboard)
 ;;        ;; Bind "s-&" to launch applications ('M-&' also works if the output
 ;;        ;; buffer does not bother you).
-;;        (,(kbd "C-c &") . (lambda (command)
+;;        (,(kbd "C-c y") . (lambda (command)
 ;;		     (interactive (list (read-shell-command "$ ")))
 ;;		     (start-process-shell-command command nil command)))
 ;;	))

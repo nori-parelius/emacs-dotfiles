@@ -202,6 +202,10 @@
   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
         languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
         languagetool-server-command "~/.languagetool/languagetool-server.jar"))
+;; NOV
+(use-package nov
+  :init
+  (add-to-list 'auto-mode-alist ' ("\\.epub\\'" . nov-mode)))
 ;; THEME
 (require 'modus-themes)
 

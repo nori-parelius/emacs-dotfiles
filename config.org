@@ -345,6 +345,22 @@ I only have this one on my home coputer.
         languagetool-server-command "~/.languagetool/languagetool-server.jar"))
 #+end_src
 
+** NOV
+An ePub reader.
+Add a code to associate it with .epub extension (from [[https://lucidmanager.org/productivity/reading-ebooks-with-emacs/][Lucid Manager]] ).
+=t= for table of contents
+=n=, =p= or =[= and =]= for next or previous chapter
+=q= to quit the ebook reader
+=C-x C-+= and =C-x C--= to increase or decrease text size.
+=g= to re-render the document.
+#+name: nov
+#+begin_src elisp
+;; NOV
+(use-package nov
+  :init
+  (add-to-list 'auto-mode-alist ' ("\\.epub\\'" . nov-mode)))
+#+end_src
+
 ** THEME
 I use modus themes from Protesilaos and like them. 
 #+name: theme
@@ -581,6 +597,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 <<ox-hugo>>
 ;;<<org-mode-preview-html>>
 <<languagetool>>
+<<nov>>
 <<theme>>
 <<exwm>>
 <<custom1>>
@@ -611,6 +628,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 <<ox-hugo>>
 <<org-mode-preview-html>>
 <<languagetool>>
+<<nov>>
 <<theme>>
 ;;<<exwm>>
 <<custom1>>
@@ -645,6 +663,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 ;;<<ox-hugo>>
 <<org-mode-preview-html>>
 ;;<<languagetool>>
+<<nov>>
 <<theme>>
 ;;<<exwm>>
 <<custom1>>

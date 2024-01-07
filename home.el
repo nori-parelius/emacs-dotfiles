@@ -207,11 +207,13 @@
   :init
   (add-to-list 'auto-mode-alist ' ("\\.epub\\'" . nov-mode)))
 ;; THEME
-(require 'modus-themes)
+(require 'ef-themes)
 
-(load-theme 'modus-operandi t)
+(load-theme 'ef-autumn :no-confirm)
 
-(define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+(setq ef-themes-to-toggle '(ef-autumn ef-cyprus))
+
+(define-key global-map (kbd "<f5>") #'ef-themes-toggle)
 ;;;; EXWM
 ;;
 ;;;; Disable menu-bar, tool-bar and scroll-bar to increase the usable space.

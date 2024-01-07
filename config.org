@@ -362,16 +362,20 @@ Add a code to associate it with .epub extension (from [[https://lucidmanager.org
 #+end_src
 
 ** THEME
-I use modus themes from Protesilaos and like them. 
+Changing to ef-themes from Protesilaos from modus themes.
 #+name: theme
 #+begin_src elisp
 ;; THEME
-(require 'modus-themes)
+(require 'ef-themes)
 
-(load-theme 'modus-operandi t)
+(load-theme 'ef-autumn :no-confirm)
 
-(define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+(setq ef-themes-to-toggle '(ef-autumn ef-cyprus))
+
+(define-key global-map (kbd "<f5>") #'ef-themes-toggle)
 #+end_src
+
+#+RESULTS: theme
 
 ** EXWM
 On my chromearch, I only have a very very barebones installation of Arch, because the thing is a brick. So Emacs also doubles as a "desktop". I obviously use EXWM for that.

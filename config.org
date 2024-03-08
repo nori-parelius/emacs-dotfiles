@@ -632,7 +632,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 <<ox-hugo>>
 <<org-mode-preview-html>>
 <<languagetool>>
-<<nov>>
+;;<<nov>>
 <<theme>>
 ;;<<exwm>>
 <<custom1>>
@@ -667,7 +667,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 ;;<<ox-hugo>>
 <<org-mode-preview-html>>
 ;;<<languagetool>>
-<<nov>>
+;;<<nov>>
 <<theme>>
 ;;<<exwm>>
 <<custom1>>

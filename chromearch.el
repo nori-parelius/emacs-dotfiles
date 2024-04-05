@@ -24,15 +24,13 @@
 (use-package magit
   :ensure t)
 ;;(use-package conda
-;;	     :ensure t
-;;	     :config
-;;	     (custom-set-variables
-;;	      '(conda-anaconda-home "C:/Users/ELPAR/AppData/Local/miniconda3"))
-;;	     ;; to add env name to mode line
-;;	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
-;;	     )
-;;
+;;	:ensure t
+;;	:config
+;;        ;; to add env name to mode line
+;;        ;;(setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
+;;)
 ;;(require 'conda)
+;;(custom-set-variables '(conda-anaconda-home "C:/Users/ELPAR/AppData/Local/miniconda3"))
 ;; deft needs deft-dir
 ;; DEFT
 (use-package deft

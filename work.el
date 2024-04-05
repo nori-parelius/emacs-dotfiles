@@ -23,13 +23,15 @@
 ;; MAGIT
 (use-package magit
   :ensure t)
-;;(use-package conda
-;;	     :ensure t
-;;	     :config
-;;	     ;; to add env name to mode line
-;;	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
-;;	     )
-;;(require 'conda)
+(use-package conda
+	     :ensure t
+	     :config
+	     ;; to add env name to mode line
+	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
+	     (custom-set-variables
+	      '(conda-anaconda-home "C:\Users\ELPAR\AppData\Local\miniconda3"))
+	     )
+(require 'conda)
 (use-package anaconda-mode
 	     :ensure t
 		 )

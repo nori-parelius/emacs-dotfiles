@@ -52,6 +52,8 @@ To get conda environments
 	     :config
 	     ;; to add env name to mode line
 	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
+	     (custom-set-variables
+	      '(conda-anaconda-home "C:\Users\ELPAR\AppData\Local\miniconda3"))
 	     )
 (require 'conda)
 #+end_src
@@ -660,7 +662,7 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
 <<melpa>>
 <<magit>>
-;;<<conda>>
+<<conda>>
 <<anaconda-mode>>
 <<deft>> ;; deft needs deft-dir
 <<org-agenda>> ;; org-agenda needs agenda-files

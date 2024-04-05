@@ -23,13 +23,13 @@
 ;; MAGIT
 (use-package magit
   :ensure t)
-;;(use-package conda
-;;	     :ensure t
-;;	     :config
-;;	     ;; to add env name to mode line
-;;	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
-;;	     )
-;;(require 'conda)
+(use-package conda
+	     :ensure t
+	     :config
+	     ;; to add env name to mode line
+	     (setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
+	     )
+(require 'conda)
 ;; DEFT
 (use-package deft
 	     :ensure t

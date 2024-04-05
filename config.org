@@ -56,6 +56,15 @@ To get conda environments
 (require 'conda)
 #+end_src
 
+** ANACONDA-MODE
+#+name: anaconda-mode
+#+begin_src elisp
+(use-package anaconda-mode
+	     :ensure t
+		 )
+(require 'anaconda-mode)
+#+end_src
+
 ** DEFT
 Deft allows to seach through a "deft folder" and all the files in it, which is very nice to have for my notes, i.e. my Zettelkasten.
 
@@ -651,7 +660,8 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
 <<melpa>>
 <<magit>>
-<<conda>>
+;;<<conda>>
+<<anaconda-mode>>
 <<deft>> ;; deft needs deft-dir
 <<org-agenda>> ;; org-agenda needs agenda-files
 <<org-babel>>

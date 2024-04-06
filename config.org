@@ -43,88 +43,6 @@ For GIT straight from Emacs, because Magit is the best.
   :ensure t)
 #+end_src
 
-** CONDA
-To get conda environments
-#+name: conda
-#+begin_src elisp
-(use-package conda
-	:ensure t
-	:config
-        ;; to add env name to mode line
-        ;;(setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
-)
-(require 'conda)
-(custom-set-variables '(conda-anaconda-home "C:/Users/ELPAR/AppData/Local/miniconda3"))
-#+end_src
-
-** ANACONDA-MODE
-#+name: anaconda-mode
-#+begin_src elisp
-(use-package anaconda-mode
-	     :ensure t
-		 )
-(require 'anaconda-mode)
-#+end_src
-
-** DEFT
-Deft allows to seach through a "deft folder" and all the files in it, which is very nice to have for my notes, i.e. my Zettelkasten.
-
-Since the Deft directory will be different on different machines, I pass this as a variable.
-I set up which file extensions should be included.
-Also bind deft to f8 for quick access.
-The special function there is something I found online. I will need to check where. It works with org-roam files to display the correct title.
-There is also another small modification to leave out the property box from the summary. 
-
-#+name: deft
-#+begin_src elisp :var deft-dir="~/Documents/TheNotes/"
-;; DEFT
-(use-package deft
-	     :ensure t
-	     :custom
-	     ((deft-directory deft-dir)
-	      (deft-extensions '("org" "txt" "tex" "md"))
-	      (deft-recursive t)
-	      )
-	     :config
-	     (global-set-key [f8] 'deft)
-	     )
-
-(defun nori/deft-parse-title (file contents)
-    "Parse the given FILE and CONTENTS and determine the title.
-  If `deft-use-filename-as-title' is nil, the title is taken to
-  be the first non-empty line of the FILE.  Else the base name of the FILE is
-  used as title."
-      (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
-	(if begin
-	    (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
-	  (deft-base-filename file))))
-  
-(advice-add 'deft-parse-title :override #'nori/deft-parse-title)
-  
-(setq deft-strip-summary-regexp
-      (concat "\\("
-	      "[\n\t]" ;; blank
-	      "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
-	      "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-	      "\\)"))
-#+end_src
-
-** ORG AGENDA
-Setting up which files and folders are used for the agenda.
-I actually have a lot of them here.
-These will be different for different machines, so again passing in the variable.
-
-
-#+name: org-agenda
-#+begin_src elisp :var agenda-files=(list "~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output"))
-;; ORG AGENDA
-;;(setq org-agenda-files (list "~/Documents/TheNotes/20230228174603-stream.org"
-;;			     "~/Documents/TheNotes/output"))
-(setq org-agenda-files agenda-files)
-(setq org-log-done 'time)
-(global-set-key (kbd "C-c a t") 'org-todo-list)
-#+end_src
-
 ** ORG-BABEL
 I mostly only use org-bable for shell, elisp and python. I don't code in python on the chromebook, but it's still nice to have the right syntax highlighting and all. 
 
@@ -591,11 +509,6 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 #+begin_src elisp :tangle ~/.emacs.d/chromearch.el :noweb strip-export
 <<melpa>>
 <<magit>>
-;;<<conda>>
-;; deft needs deft-dir
-<<deft>>
-;; org-agenda needs agenda-files
-<<org-agenda>>
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -622,13 +535,10 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 
 ** Home config
 #+name: home
-#+header: :var deft-dir="~/Documents/TheNotes/" :var agenda-files=(list "~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output")) :var roam-dir="~/Documents/TheNotes/" :var bib-file="/home/nori/Documents/TheNotes/biblio.bib" 
+#+header: :var roam-dir="~/Documents/TheNotes/" :var bib-file="/home/nori/Documents/TheNotes/biblio.bib" 
 #+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
 <<melpa>>
 <<magit>>
-<<conda>>
-<<deft>> ;; deft needs deft-dir
-<<org-agenda>> ;; org-agenda needs agenda-files
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -657,14 +567,10 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 
 ** Work config
 #+name: work C:\Users\ELPAR\TheNotes
-#+header: :var deft-dir="C:/Users/ELPAR/MyDocuments/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var agenda-files=(list "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_WorkNotes" "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/output")) :var roam-dir="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var bib-file="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib" 
+#+header: :var roam-dir="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var bib-file="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib" 
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
 <<melpa>>
 <<magit>>
-;;<<conda>>
-<<anaconda-mode>>
-<<deft>> ;; deft needs deft-dir
-<<org-agenda>> ;; org-agenda needs agenda-files
 <<org-babel>>
 <<vertico>>
 <<orderless>>

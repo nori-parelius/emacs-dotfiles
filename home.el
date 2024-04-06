@@ -1,6 +1,4 @@
-(let ((deft-dir '"~/Documents/TheNotes/")
-      (agenda-files '("~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output"))
-      (roam-dir '"~/Documents/TheNotes/")
+(let ((roam-dir '"~/Documents/TheNotes/")
       (bib-file '"/home/nori/Documents/TheNotes/biblio.bib"))
 ;; Enables basic packaging support
 (require 'package)
@@ -23,50 +21,6 @@
 ;; MAGIT
 (use-package magit
   :ensure t)
-(use-package conda
-	:ensure t
-	:config
-        ;; to add env name to mode line
-        ;;(setq-default mode-line-format (cons '(:exec conda-env-current-name) mode-line-format))
-)
-(require 'conda)
-(custom-set-variables '(conda-anaconda-home "C:/Users/ELPAR/AppData/Local/miniconda3"))
-;; DEFT
-(use-package deft
-	     :ensure t
-	     :custom
-	     ((deft-directory deft-dir)
-	      (deft-extensions '("org" "txt" "tex" "md"))
-	      (deft-recursive t)
-	      )
-	     :config
-	     (global-set-key [f8] 'deft)
-	     )
-
-(defun nori/deft-parse-title (file contents)
-    "Parse the given FILE and CONTENTS and determine the title.
-  If `deft-use-filename-as-title' is nil, the title is taken to
-  be the first non-empty line of the FILE.  Else the base name of the FILE is
-  used as title."
-      (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
-	(if begin
-	    (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
-	  (deft-base-filename file))))
-  
-(advice-add 'deft-parse-title :override #'nori/deft-parse-title)
-  
-(setq deft-strip-summary-regexp
-      (concat "\\("
-	      "[\n\t]" ;; blank
-	      "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
-	      "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-	      "\\)")) ;; deft needs deft-dir
-;; ORG AGENDA
-;;(setq org-agenda-files (list "~/Documents/TheNotes/20230228174603-stream.org"
-;;			     "~/Documents/TheNotes/output"))
-(setq org-agenda-files agenda-files)
-(setq org-log-done 'time)
-(global-set-key (kbd "C-c a t") 'org-todo-list) ;; org-agenda needs agenda-files
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages

@@ -79,8 +79,6 @@
 ;; ===================================
 ;; Basic Customization
 ;; ===================================
-;; Start citar-org-roam
-(citar-org-roam-mode t)
 
 ;; Set org-image width to nil, so it can be set manually
 (setq org-image-actual-width nil)

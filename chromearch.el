@@ -181,9 +181,6 @@
 ;; Set org-image width to nil, so it can be set manually
 (setq org-image-actual-width nil)
 
-;; Increase size of LaTeX fragment previews
-(plist-put org-format-latex-options :scale 2)
-
 ;; Enable word wrap
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 

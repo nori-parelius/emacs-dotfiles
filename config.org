@@ -43,29 +43,6 @@ For GIT straight from Emacs, because Magit is the best.
   :ensure t)
 #+end_src
 
-** ORG-BABEL
-I mostly only use org-bable for shell, elisp and python. I don't code in python on the chromebook, but it's still nice to have the right syntax highlighting and all. 
-
-#+name: org-babel
-#+begin_src elisp
-;; ORG-BABEL
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (python . t)
-   (shell . t)
-   (emacs-lisp . t)))
-
-
-;; to syntax highlight code in babel and to remove the "Do you want to execute?" question
-(setq org-confirm-babel-evaluate nil
-      org-src-fontify-natively t
-      org-src-tab-acts-natively t
-      org-src-preserve-indentation t
-      )
-(setq python-indent-guess-indent-offset nil)
-(setq python-indent-offset 4)
-#+end_src
 
 ** VERTICO (with ORDERLESS), MARGINALIA and EMBARK
 *** VERTICO
@@ -116,117 +93,7 @@ Embark allows for a context menu, kind of like a right-click.
   )
 #+end_src
 
-** Things for my Zettelkasten -- ORG-ROAM, CITAR, CITAR-ORG-ROAM, CITAR-EMBARK, ORG-ROAM-UI
-*** ORG-ROAM
-Org-roam allows to build a linked database of notes. I use it for my Zettelkasten.
 
-To set it up, a roam directory needs to be defined, for me it's =TheNotes=.
-I also set up capture templates, which define templates for different types of my notes. I mostly have zettel (normal note), output (notes that go in their separate output folder and are things that I am planning to publish/share somewhere), input (are notes in input folder where I am capturing initial notes from external sources) and reference (input notes associated with a Zotero reference).
-
-The rest of the config is mostly standard. 
-#+name: org-roam
-#+begin_src elisp :var roam-dir="~/Documents/TheNotes/"
-;; ORG-ROAM
-(use-package org-roam
-	     :ensure t
-	     :custom
-	     (org-roam-directory roam-dir)
-	     (org-roam-completion-everywhere t)
-	     (org-roam-capture-templates
-	      '(("d" "default" plain
-		 "%?"
-		 :target
-		 (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
-		:unnarrowed t)
-		("z" "zettel" plain
-		"%?"
-		:target
-		(file+head "zettel/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
-		:unnarrowed t)
-	       	("o" "output" plain
-		"%?"
-		:target
-		(file+head "output/%<%Y%m%d%H%M%S>-O-${slug}.org" "#+title: O-${title}\n#+filetags: :output")
-		:unnarrowed t)
-  	        ("i" "input" plain
-		"%?"
-		:target
-		(file+head "input/%<%Y%m%d%H%M%S>-I-${slug}.org" "#+title: I-${title}\n#+filetags: :input")
-		:unnarrowed t)
-	        ("r" "reference" plain
-		"%?"
-		:target
-		(file+head "%(expand-file-name \"input\" org-roam-directory)/%<%Y%m%d%H%M%S>-I-${citekey}.org" "#+title: I-${citekey}\n#+filetags: :input")
-		:unnarrowed t)
-		)
-	      )
-	     :bind (("C-c n l" . org-roam-buffer-toggle)
-		    ("C-c n f" . org-roam-node-find)
-		    ("C-c n i" . org-roam-node-insert)
-		    ("C-M-i" . completion-at-point))
-	     :config
-	     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
-	     (org-roam-db-autosync-mode t)
-
-	     )
-#+end_src
-
-*** Citations with CITAR and CITAR-ORG-ROAM
-**** CITAR
-Citar for citations, using an exported bibliography from Zotero. Binding insertion of reference to "C-c b".
-Do I need this org-cite one?
-(setq org-cite-global-bibliography '("/home/nori/Documents/TheNotes/biblio.bib"))
-#+name: citar
-#+begin_src elisp :var bib-file="/home/nori/Documents/TheNotes/biblio.bib"
-;; CITAR
-(use-package citar
-  :ensure t
-  :custom
-  (setq org-cite-global-bibliography bib-file)
-  (citar-bibliography bib-file)
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
-  )
-#+end_src
-
-**** CITAR-ORG-ROAM
-Citar org roam allows to use my roam capture template to make a note from a reference.
-I am loading the package later though. 
-#+name: citar-org-roam
-#+begin_src elisp
-;; CITAR-ORG-ROAM
-(use-package citar-org-roam
-  :ensure t
-  :after citar org-roam
-  :no-require t
-  :config
-  (setq citar-org-roam-capture-template-key "r")
-  )
-#+end_src
-
-**** CITAR-EMBARK
-#+name: citar-embark
-#+begin_src elisp
-(use-package citar-embark
-  :ensure t
-  :after citar embark
-  :no-require
-  :config (citar-embark-mode))
-#+end_src
-
-*** ORG-ROAM-UI
-Org-roam-ui creates a graph view of my notes and shows it in the browser.
-#+name: org-roam-ui
-#+begin_src elisp
-;; ORG-ROAM-UI
-(use-package org-roam-ui
-  :ensure t
-  :after org-roam)
-(require 'org-roam-ui)
-#+end_src
 
 ** OX-HUGO
 Ox-hugo is an interface with Hugo, a system for making static sites. 
@@ -240,16 +107,6 @@ Ox-hugo is an interface with Hugo, a system for making static sites.
   )
 #+end_src
 
-** ORG-PREVIEW-HTML
-A package for previewing output HTML from a org-mode files. 
-#+name: org-preview-html
-#+begin_src elisp
-;; ORG-PREVIEW-HTML
-(use-package org-preview-html
-  :ensure t
-  )
-(require 'org-preview-html)
-#+end_src
 
 ** LANGUAGETOOL
 Interfacing with languagetool for spelling and style check.
@@ -271,22 +128,6 @@ I only have this one on my home coputer.
   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
         languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
         languagetool-server-command "~/.languagetool/languagetool-server.jar"))
-#+end_src
-
-** NOV
-An ePub reader.
-Add a code to associate it with .epub extension (from [[https://lucidmanager.org/productivity/reading-ebooks-with-emacs/][Lucid Manager]] ).
-=t= for table of contents
-=n=, =p= or =[= and =]= for next or previous chapter
-=q= to quit the ebook reader
-=C-x C-+= and =C-x C--= to increase or decrease text size.
-=g= to re-render the document.
-#+name: nov
-#+begin_src elisp
-;; NOV
-(use-package nov
-  :init
-  (add-to-list 'auto-mode-alist ' ("\\.epub\\'" . nov-mode)))
 #+end_src
 
 ** THEME
@@ -481,26 +322,6 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
   )
 #+end_src
 
-*** A few optionals
-#+begin_src elisp
-;; Increase line spacing
-;;(setq-default line-spacing 6)
-
-;; Enable line numbers globally
-;;(global-linum-mode t)
-
-;; Start with inline images
-;;(setq org-startup-with-inline-images t)
-#+end_src
-
-*** Browser in WSL
-I used to have a thing for getting the right browser in WSL, but I don't use a WSL anymore
-#+name: wsl-browser
-#+begin_src elisp
-;; to get the right browser on wsl
-;;(setq browse-url-browser-function 'browse-url-generic
-;;      browse-url-generic-program "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
-#+end_src
 
 
 ** Chromearch config
@@ -514,17 +335,8 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 <<orderless>>
 <<marginalia>>
 <<embark>>
-;; org-roam needs roam-dir
-<<org-roam>>
-;; citar needs bib-file
-<<citar>>
-<<citar-org-roam>>
-<<citar-embark>>
-;;<<org-roam-ui>>
 <<ox-hugo>>
-;;<<org-mode-preview-html>>
 <<languagetool>>
-<<nov>>
 <<theme>>
 <<exwm>>
 <<custom1>>
@@ -544,17 +356,10 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 <<orderless>>
 <<marginalia>>
 <<embark>>
-<<org-roam>> ;; org-roam needs roam-dir
-<<citar>> ;; citar needs bib-file
-<<citar-org-roam>>
-<<citar-embark>>
-<<org-roam-ui>>
 <<ox-hugo>>
-<<org-mode-preview-html>>
 <<languagetool>>
-;;<<nov>>
 <<theme>>
-;;<<exwm>>
+
 <<custom1>>
 <<mixed-pitch>>
 
@@ -565,39 +370,6 @@ I used to have a thing for getting the right browser in WSL, but I don't use a W
 ;; User-Defined init.el ends here
 #+end_src
 
-** Work config
-#+name: work C:\Users\ELPAR\TheNotes
-#+header: :var roam-dir="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var bib-file="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib" 
-#+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
-<<melpa>>
-<<magit>>
-<<org-babel>>
-<<vertico>>
-<<orderless>>
-<<marginalia>>
-<<embark>>
-<<org-roam>> ;; org-roam needs roam-dir
-<<citar>> ;; citar needs bib-file
-<<citar-org-roam>>
-<<citar-embark>>
-<<org-roam-ui>>
-;;<<ox-hugo>>
-<<org-mode-preview-html>>
-;;<<languagetool>>
-;;<<nov>>
-<<theme>>
-;;<<exwm>>
-<<custom1>>
-<<mixed-pitch>>
-
-;; Enable line numbers globally
-;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
-(global-display-line-numbers-mode t)
-
-(setq package-install-upgrade-built-in t)
-
-;; User-Defined init.el ends here
-#+end_src
 
 ** Init.el file
 The only thing happening here is chosing which config to load, depending on which machine I am on.

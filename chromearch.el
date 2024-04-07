@@ -23,23 +23,7 @@
 ;; MAGIT
 (use-package magit
   :ensure t)
-;; ORG-BABEL
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (python . t)
-   (shell . t)
-   (emacs-lisp . t)))
 
-
-;; to syntax highlight code in babel and to remove the "Do you want to execute?" question
-(setq org-confirm-babel-evaluate nil
-      org-src-fontify-natively t
-      org-src-tab-acts-natively t
-      org-src-preserve-indentation t
-      )
-(setq python-indent-guess-indent-offset nil)
-(setq python-indent-offset 4)
 ;; VERTICO
 (use-package vertico
   :ensure t
@@ -64,88 +48,12 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;; org-roam needs roam-dir
-;; ORG-ROAM
-(use-package org-roam
-	     :ensure t
-	     :custom
-	     (org-roam-directory roam-dir)
-	     (org-roam-completion-everywhere t)
-	     (org-roam-capture-templates
-	      '(("d" "default" plain
-		 "%?"
-		 :target
-		 (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
-		:unnarrowed t)
-		("z" "zettel" plain
-		"%?"
-		:target
-		(file+head "zettel/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
-		:unnarrowed t)
-	       	("o" "output" plain
-		"%?"
-		:target
-		(file+head "output/%<%Y%m%d%H%M%S>-O-${slug}.org" "#+title: O-${title}\n#+filetags: :output")
-		:unnarrowed t)
-  	        ("i" "input" plain
-		"%?"
-		:target
-		(file+head "input/%<%Y%m%d%H%M%S>-I-${slug}.org" "#+title: I-${title}\n#+filetags: :input")
-		:unnarrowed t)
-	        ("r" "reference" plain
-		"%?"
-		:target
-		(file+head "%(expand-file-name \"input\" org-roam-directory)/%<%Y%m%d%H%M%S>-I-${citekey}.org" "#+title: I-${citekey}\n#+filetags: :input")
-		:unnarrowed t)
-		)
-	      )
-	     :bind (("C-c n l" . org-roam-buffer-toggle)
-		    ("C-c n f" . org-roam-node-find)
-		    ("C-c n i" . org-roam-node-insert)
-		    ("C-M-i" . completion-at-point))
-	     :config
-	     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
-	     (org-roam-db-autosync-mode t)
-
-	     )
-;; citar needs bib-file
-;; CITAR
-(use-package citar
-  :ensure t
-  :custom
-  (setq org-cite-global-bibliography bib-file)
-  (citar-bibliography bib-file)
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
-  )
-;; CITAR-ORG-ROAM
-(use-package citar-org-roam
-  :ensure t
-  :after citar org-roam
-  :no-require t
-  :config
-  (setq citar-org-roam-capture-template-key "r")
-  )
-(use-package citar-embark
-  :ensure t
-  :after citar embark
-  :no-require
-  :config (citar-embark-mode))
-;;;; ORG-ROAM-UI
-;;(use-package org-roam-ui
-;;  :ensure t
-;;  :after org-roam)
-;;(require 'org-roam-ui)
 ;; OX-HUGO
 (use-package ox-hugo
   :ensure t
   :pin melpa
   :after ox
   )
-;;
 (use-package languagetool
   :ensure t
   :defer t
@@ -161,10 +69,6 @@
   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
         languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
         languagetool-server-command "~/.languagetool/languagetool-server.jar"))
-;; NOV
-(use-package nov
-  :init
-  (add-to-list 'auto-mode-alist ' ("\\.epub\\'" . nov-mode)))
 ;; THEME
 (require 'ef-themes)
 

@@ -54,7 +54,7 @@ Mostly for shell, elisp and python.
  '(
    (python . t)
    (shell . t)
-   (emacs-lisp . t)
+   (emacs-lisp . t)))
 
 ;; to syntax highlight code in babel and to remove the "Do you want to execute?" question
 (setq org-confirm-babel-evaluate nil
@@ -277,7 +277,7 @@ I mostly followed the configuration example https://github.com/ch11ng/exwm/wiki/
 
 *** A few things I always want
 Various settings that I always want.
-- Start citar-org-roam.
+(- Start citar-org-roam.)
 - Allow for manual resizing of images in org.
 - Increase size of latex fragments.
 - Enable word wrap.
@@ -338,7 +338,47 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
   )
 #+end_src
 
+** Extra functions
+*** AUTO PUSH and PULL for magit repos
+Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit_stashpullpopcommitpush/
 
+#+name: autopull
+#+begin_src elisp
+(defun nori-magit-pull-if-no-unstaged-changes (directory)
+  "Perform a `git pull` in the specified DIRECTORY if there are no unstaged changes."
+  (interactive "DDirectory: ") ;;interactively asks for directory and offers autocomplete
+  (magit--with-safe-default-directory directory ;;temporarily change dir
+    (message "Checking if %s is a git repository" directory)
+    (if (not (magit-git-repo-p directory))
+        (message "Not a git repository: %s" directory)
+      (let ((has-diff (magit-git-string "diff" "--exit-code"))) ;;save exit code of running git diff into has-diff
+        (message "has-diff: %s" has-diff)
+        (if has-diff
+            (message "There are unstaged changes in %s. Please commit or stash them before pulling." directory)
+          (progn ;;to execute multiple expressions and return the last
+            (magit-git-string-ng "pull")
+            (message "Pulled %s successfully." directory)))))))
+
+(defun nori-magit-pull-directories (directories)
+  "Perform a 'git pull' in each directory in directories if there are no unstaged changes."
+  (interactive)
+  (dolist (directory directories)
+    (nori-magit-pull-if-no-unstaged-changes directory)))
+
+(defun nori-magit-pull-my-dirs ()
+  "Perform a 'git pull' on a list of my directories."
+  (interactive)
+  (let ((directories '("~/Documents/writing"
+		       "~/Documents/Notes"
+		       "~/Documents/noriparelius"
+		       "~/Documents/CompNotes"
+		       "~/.emacs.d/")))
+    (nori-magit-pull-directories directories)))
+  
+#+end_src
+
+#+RESULTS: autopull
+: nori-magit-pull-my-dirs
 
 ** Chromearch config
 #+name: chromearch
@@ -357,6 +397,7 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
 <<exwm>>
 <<custom1>>
 <<mixed-pitch>>
+<<autopull>> 
 
 ;; User-Defined init.el ends here
 #+end_src
@@ -378,11 +419,13 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
 
 <<custom1>>
 <<mixed-pitch>>
+<<autopull>> 
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
 
+(nori-magit-pull-my-dirs)
 ;; User-Defined init.el ends here
 #+end_src
 
@@ -396,6 +439,6 @@ I figured the easiest was to distinguish them by the name of the computer.
    ((equal system-name "myarch")
     (load "~/.emacs.d/chromearch.el"))
    ((equal system-name "nori-MS-7982")
-    (load "~/.emacs.d/home.el"))
+    (load "~/.emacs.d/home.el")))
 #+end_src
 

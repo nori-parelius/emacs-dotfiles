@@ -43,7 +43,28 @@ For GIT straight from Emacs, because Magit is the best.
   :ensure t)
 #+end_src
 
+** ORG-BABEL
+Mostly for shell, elisp and python.
 
+#+name: org-babel
+#+begin_src elisp
+;; ORG-BABEL
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   (shell . t)
+   (emacs-lisp . t)
+
+;; to syntax highlight code in babel and to remove the "Do you want to execute?" question
+(setq org-confirm-babel-evaluate nil
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-src-preserve-indentation t
+      )
+(setq python-indent-guess-indent-offset nil)
+(setq python-indent-offset 4)
+#+end_src
 ** VERTICO (with ORDERLESS), MARGINALIA and EMBARK
 *** VERTICO
 Vertico is a completion framework. And also allows to write space in minibuffer, which doesn't work in out-of-the-box Emacs.
@@ -376,52 +397,5 @@ I figured the easiest was to distinguish them by the name of the computer.
     (load "~/.emacs.d/chromearch.el"))
    ((equal system-name "nori-MS-7982")
     (load "~/.emacs.d/home.el"))
-   ((equal system-name "MU386U")
-    (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
 #+end_src
 
-
-#+begin_src elisp :results output
-  (print (system-name))
-  (setq n (system-name))
-  (print n)
-  (cond
-   ((equal system-name "myarch")
-    (print system-name))
-   (t (print "no")))
-
-  ;;(cond
-     ;;((eq system-name 'myarch)
-      ;;(print system-name)
-      ;;(load "chromearch.el")
-	     ;;)
-     ;;((eq system-name 'som)
-      ;;(load "home.el"))
-     ;;((eq system-name 'some)
-      ;;(load "work.el"))
-	  ;;)
-#+end_src
-
-#+RESULTS:
-: 
-: "MU386U"
-: 
-: "MU386U"
-: 
-: "no"
-
-
-#+name: test_var
-#+begin_src elisp :var a=1
-(setq myvar a)f
-#+end_src
-
-#+RESULTS: test_var
-: 1
-
-#+begin_src elisp :noweb yes :var a=2
-<<test_var>>
-#+end_src
-
-#+RESULTS:
-: 2

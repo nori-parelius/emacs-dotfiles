@@ -162,7 +162,46 @@
 		       "~/Documents/CompNotes"
 		       "~/.emacs.d/")))
     (nori-magit-pull-directories directories)))
-   
+
+
+(defun nori-magit-push-with-date (directory)
+  "Perform a git commit with the day's date on a specified directory and push it upstream."
+  (interactive "DDirectory: ")
+  (magit--with-safe-default-directory directory
+    (message "Checking if %s is a git repo" directory)
+    (if (not (magit-git-repo-p directory))
+        (message "Not a git repository: %s" directory)
+      (progn
+	;; Update magit
+	(magit-refresh) ;; Refresh the status to make sure we catch everything
+	;; Stage all changes
+	(magit-stage-modified 'all)
+        ;; Commit
+	(if (magit-anything-staged-p)
+	    (progn
+	      (let ((commit-message (current-time-string)))
+		(magit-commit-create `("-m" ,commit-message)))
+	      ;; Push
+              (magit-push-current-to-upstream nil)))))))
+
+(defun nori-magit-push-directories (directories)
+  "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
+  (interactive)
+  (dolist (directory directories)
+    (nori-magit-push-with-date directory)))
+
+(defun nori-magit-push-my-dirs ()
+  "Perform a 'git commit' and 'git push' on a list of my directories."
+  (interactive)
+  (let ((directories '("~/Documents/writing"
+		       "~/Documents/Notes"
+		       "~/Documents/noriparelius"
+		       "~/Documents/CompNotes")))
+    (nori-magit-push-directories directories)))
+
+(add-to-list 'magit-no-confirm 'stage-all-changes)
+(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs)
+ 
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

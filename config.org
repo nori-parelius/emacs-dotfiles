@@ -390,11 +390,10 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 	(magit-stage-modified 'all) ;;stages all modified files, including deleted. With all flag also stages new files.
         ;; Commit
 	(if (magit-anything-staged-p)
-	    (progn
-	      (let ((commit-message (current-time-string)))
-		(magit-commit-create `("-m" ,commit-message)))
-	      ;; Push
-              (magit-push-current-to-upstream nil)))))))
+	    (let ((commit-message (current-time-string)))
+		(magit-commit-create `("-m" ,commit-message))))
+	;; Push
+        (magit-push-current-to-upstream nil)))))
 
 (defun nori-magit-push-directories (directories)
   "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
@@ -417,6 +416,7 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 #+end_src
 
 #+RESULTS: autopullpush
+| org-persist-gc | org-persist-write-all | org-persist-clear-storage-maybe | org-id-locations-save | nori-magit-push-my-dirs | org-babel-remove-temporary-stable-directory | org-babel-remove-temporary-directory | transient-maybe-save-history |
 
 
 ** Chromearch config

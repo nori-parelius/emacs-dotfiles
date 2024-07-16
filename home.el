@@ -175,14 +175,13 @@
 	;; Update magit
 	(magit-refresh) ;; Refresh the status to make sure we catch everything
 	;; Stage all changes
-	(magit-stage-modified 'all)
+	(magit-stage-modified 'all) ;;stages all modified files, including deleted. With all flag also stages new files.
         ;; Commit
 	(if (magit-anything-staged-p)
-	    (progn
-	      (let ((commit-message (current-time-string)))
-		(magit-commit-create `("-m" ,commit-message)))
-	      ;; Push
-              (magit-push-current-to-upstream nil)))))))
+	    (let ((commit-message (current-time-string)))
+		(magit-commit-create `("-m" ,commit-message))))
+	;; Push
+        (magit-push-current-to-upstream nil)))))
 
 (defun nori-magit-push-directories (directories)
   "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
@@ -199,8 +198,8 @@
 		       "~/Documents/CompNotes")))
     (nori-magit-push-directories directories)))
 
-(add-to-list 'magit-no-confirm 'stage-all-changes)
-(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs)
+(add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
+(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit
  
 
 ;; Enable line numbers globally

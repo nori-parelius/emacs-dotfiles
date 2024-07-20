@@ -438,6 +438,7 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 <<mixed-pitch>>
 <<autopullpush>> 
 
+(nori-magit-pull-my-dirs)
 ;; User-Defined init.el ends here
 #+end_src
 

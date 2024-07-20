@@ -300,5 +300,6 @@
 (add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit
  
 
+(nori-magit-pull-my-dirs)
 ;; User-Defined init.el ends here
 )

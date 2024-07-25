@@ -293,31 +293,31 @@
 (defun nori-magit-push-with-date (directory)
   "Perform a git commit with the day's date on a specified directory and push it upstream."
   (interactive "DDirectory: ")
-  (let ((original-directory default-directory))  ;; Store the original directory
-    (unwind-protect
-        (progn
-          (magit--with-safe-default-directory directory
-            (message "Checking if %s is a git repo" directory)
-            (if (not (magit-git-repo-p directory))
-                (message "Not a git repository: %s" directory)
-              (progn
-                ;; Update magit
-                (magit-refresh)  ;; Refresh the status to make sure we catch everything
-                ;; Stage all changes
-                (magit-stage-modified 'all)  ;; Stages all modified files, including deleted. With all flag also stages new files.
-                ;; Commit
-                (if (magit-anything-staged-p)
-                    (let ((commit-message (current-time-string)))
-                      (magit-commit-create `("-m" ,commit-message))))
-                ;; Get the current branch name
-                (let ((branch (magit-get-current-branch)))
-                  ;; Push
-                  (magit-run-git-async "push" "-v" "origin" (format "%s:%s" branch branch))))))
-          ;; Wait for any pending processes to complete
-          (while (and (boundp 'magit-process) (process-live-p magit-process))
-            (sleep-for 0.1)))
-      ;; Ensure that we return to the original directory
-      (setq default-directory original-directory))))
+  (progn
+    (magit--with-safe-default-directory directory
+      (message "Checking if %s is a git repo" directory)
+      (if (not (magit-git-repo-p directory))
+	  (message "Not a git repository: %s" directory)
+	(progn
+	  ;; Update magit
+          (magit-refresh)  ;; Refresh the status to make sure we catch everything
+          ;; Stage all changes
+          (magit-stage-modified 'all)  ;; Stages all modified files, including deleted. With all flag also stages new files.
+          ;; Commit
+          (if (magit-anything-staged-p)
+              (let ((commit-message (current-time-string)))
+                (magit-commit-create `("-m" ,commit-message))))
+          ;; Get the current branch name
+          (let ((branch (magit-get-current-branch)))
+            ;; Push
+	    ;;magit-push-current-to-upstream nil
+            (magit-run-git-async "push" "-v" "origin" (format "%s:%s" branch branch))))))
+    ;; Wait for any pending processes to complete
+    (while (and (boundp 'magit-process) (process-live-p magit-process))
+      (sleep-for 1))))
+
+        
+
 
 (defun nori-magit-push-directories (directories)
   "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
@@ -332,7 +332,10 @@
 		       "~/Documents/Notes"
 		       "~/Documents/noriparelius"
 		       "~/Documents/CompNotes")))
-    (nori-magit-push-directories directories)))
+    (progn
+      (nori-magit-push-directories directories)
+      ;;(nori-close-all-magit-processes-and-buffers)
+      )))
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook

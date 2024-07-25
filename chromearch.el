@@ -239,20 +239,36 @@
       (message "Killing Magit process: %s" (process-name proc))
       (delete-process proc))))
 
+(defun nori-close-all-magit-buffers ()
+  "Close all Magit buffers."
+  (interactive)
+  (dolist (buffer (buffer-list))
+    (when (and (buffer-live-p buffer)
+               (with-current-buffer buffer
+                 (derived-mode-p 'magit-mode)))
+      (message "Killing Magit buffer: %s" (buffer-name buffer))
+      (kill-buffer buffer))))
+
+(defun nori-close-all-magit-processes-and-buffers ()
+  "Close all active Magit processes and buffers."
+  (interactive)
+  (nori-close-all-magit-processes)  ;; Close Magit processes
+  (nori-close-all-magit-buffers))   ;; Close Magit buffers
+
 
 (defun nori-magit-pull-if-no-unstaged-changes (directory)
-  "Perform a `git pull` in the specified DIRECTORY if there are no unstaged changes."
-  (interactive "DDirectory: ")
-  (magit--with-safe-default-directory directory
+  "Perform a git pull in the specified DIRECTORY if there are no unstaged changes."
+  (interactive "DDirectory: ") ;;interactively asks for directory and offers autocomplete
+  (magit--with-safe-default-directory directory ;;temporarily change dir
     (message "Checking if %s is a git repository" directory)
     (if (not (magit-git-repo-p directory))
         (message "Not a git repository: %s" directory)
-      (let ((has-diff (magit-git-string "diff" "--exit-code")))  ;; Save exit code of running git diff into has-diff
+      (let ((has-diff (magit-git-string "diff" "--exit-code"))) ;;save exit code of running git diff into has-diff
         (message "has-diff: %s" has-diff)
         (if has-diff
             (message "There are unstaged changes in %s. Please commit or stash them before pulling." directory)
-          (progn  ;; To execute multiple expressions and return the last
-            (magit-run-git-async "pull")
+          (progn ;;to execute multiple expressions and return the last
+            (magit-git-string-ng "pull")
             (message "Pulled %s successfully." directory)))))))
 
 (defun nori-magit-pull-directories (directories)
@@ -271,7 +287,7 @@
 		       "~/.emacs.d/")))
     (progn
       (nori-magit-pull-directories directories)
-      (nori-close-all-magit-processes))))
+      (nori-close-all-magit-processes-and-buffers))))
 
 
 (defun nori-magit-push-with-date (directory)
@@ -301,23 +317,8 @@
           (while (and (boundp 'magit-process) (process-live-p magit-process))
             (sleep-for 0.1)))
       ;; Ensure that we return to the original directory
-      (magit-mode-bury-buffer)  ;; Close the Magit buffer
       (setq default-directory original-directory))))
 
-(defun nori-magit-push-directories (directories)
-  "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
-  (interactive)
-  (dolist (directory directories)
-    (nori-magit-push-with-date directory)))
-
-(defun nori-magit-push-my-dirs ()
-  "Perform a 'git commit' and 'git push' on a list of my directories."
-  (interactive)
-  (let ((directories '("~/Documents/writing"
-                       "~/Documents/Notes"
-                       "~/Documents/noriparelius"
-                       "~/Documents/CompNotes")))
-    (nori-magit-push-directories directories)))
 (defun nori-magit-push-directories (directories)
   "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
   (interactive)
@@ -332,6 +333,7 @@
 		       "~/Documents/noriparelius"
 		       "~/Documents/CompNotes")))
     (nori-magit-push-directories directories)))
+
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
 (add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit

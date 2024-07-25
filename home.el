@@ -175,7 +175,7 @@
 		       "~/.emacs.d/")))
     (progn
       (nori-magit-pull-directories directories)
-      (sleep-for 3)
+      (sleep-for 1)
       (nori-close-all-magit-buffers))))
 
 

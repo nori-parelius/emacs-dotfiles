@@ -379,22 +379,42 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 (defun nori-magit-push-with-date (directory)
   "Perform a git commit with the day's date on a specified directory and push it upstream."
   (interactive "DDirectory: ")
-  (magit--with-safe-default-directory directory
-    (message "Checking if %s is a git repo" directory)
-    (if (not (magit-git-repo-p directory))
-        (message "Not a git repository: %s" directory)
-      (progn
-	;; Update magit
-	(magit-refresh) ;; Refresh the status to make sure we catch everything
-	;; Stage all changes
-	(magit-stage-modified 'all) ;;stages all modified files, including deleted. With all flag also stages new files.
-        ;; Commit
-	(if (magit-anything-staged-p)
-	    (let ((commit-message (current-time-string)))
-		(magit-commit-create `("-m" ,commit-message))))
-	;; Push
-        (magit-push-current-to-upstream nil)))))
+  (let ((original-directory default-directory)  ;; Store the original directory
+        (default-directory (file-name-as-directory directory)))  ;; Change to the target directory
+    (unwind-protect  ;; Ensure cleanup happens even if there is an error
+        (progn
+          (message "Checking if %s is a git repo" directory)
+          (if (not (magit-git-repo-p directory))
+              (message "Not a git repository: %s" directory)
+            (progn
+              ;; Update magit
+              (magit-refresh)  ;; Refresh the status to make sure we catch everything
+              ;; Stage all changes
+              (magit-stage-modified 'all)  ;; stages all modified files, including deleted. With all flag also stages new files.
+              ;; Commit
+              (if (magit-anything-staged-p)
+                  (let ((commit-message (current-time-string)))
+                    (magit-commit-create `("-m" ,commit-message))))
+              ;; Push
+              (magit-push-current-to-upstream nil))))
+      ;; Cleanup: Close any Magit buffers and revert to the original directory
+      (magit-mode-bury-buffer)  ;; Close the Magit buffer
+      (setq default-directory original-directory))))  ;; Reset to the original directory
 
+(defun nori-magit-push-directories (directories)
+  "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
+  (interactive)
+  (dolist (directory directories)
+    (nori-magit-push-with-date directory)))
+
+(defun nori-magit-push-my-dirs ()
+  "Perform a 'git commit' and 'git push' on a list of my directories."
+  (interactive)
+  (let ((directories '("~/Documents/writing"
+                       "~/Documents/Notes"
+                       "~/Documents/noriparelius"
+                       "~/Documents/CompNotes")))
+    (nori-magit-push-directories directories)))
 (defun nori-magit-push-directories (directories)
   "Perform a 'git commit' and 'git push' in each directory in directories if there are unstaged changes."
   (interactive)

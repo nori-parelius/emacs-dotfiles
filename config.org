@@ -344,14 +344,17 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 
 #+name: autopullpush
 #+begin_src elisp
-(defun nori-close-all-magit-processes ()
-  "Close all active Magit processes."
-  (interactive)
-  (dolist (proc (process-list))
-    (when (and (process-live-p proc)
-               (string-match-p "magit" (process-name proc)))
-      (message "Killing Magit process: %s" (process-name proc))
-      (delete-process proc))))
+
+(defun nori-wait-for-magit-processes ()
+  "Wait for all active Magit processes to complete."
+  (let ((running t))
+    (while running
+      (setq running nil)
+      (dolist (proc (process-list))
+        (when (and (process-live-p proc)
+                   (string-match-p "magit" (process-name proc)))
+          (setq running t)))
+      (sleep-for 3))))
 
 (defun nori-close-all-magit-buffers ()
   "Close all Magit buffers."
@@ -364,10 +367,10 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
       (kill-buffer buffer))))
 
 (defun nori-close-all-magit-processes-and-buffers ()
-  "Close all active Magit processes and buffers."
+  "Wait for all Magit processes to complete and then close all Magit buffers."
   (interactive)
-  (nori-close-all-magit-processes)  ;; Close Magit processes
-  (nori-close-all-magit-buffers))   ;; Close Magit buffers
+  (nori-wait-for-magit-processes)
+  (nori-close-all-magit-buffers))
 
 
 (defun nori-magit-pull-if-no-unstaged-changes (directory)
@@ -421,15 +424,11 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
           (if (magit-anything-staged-p)
               (let ((commit-message (current-time-string)))
                 (magit-commit-create `("-m" ,commit-message))))
-          ;; Get the current branch name
-          (let ((branch (magit-get-current-branch)))
-            ;; Push
-	    ;;magit-push-current-to-upstream nil
-            (magit-run-git-async "push" "-v" "origin" (format "%s:%s" branch branch))))))
-    ;; Wait for any pending processes to complete
-    (while (and (boundp 'magit-process) (process-live-p magit-process))
-      (sleep-for 1))))
-
+          ;; Push
+	  (magit-push-current-to-upstream nil)
+	  (magit-refresh)
+	  ))
+      )))
         
 
 
@@ -442,14 +441,12 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 (defun nori-magit-push-my-dirs ()
   "Perform a 'git commit' and 'git push' on a list of my directories."
   (interactive)
-  (let ((directories '("~/Documents/writing"
-		       "~/Documents/Notes"
+  (let ((directories '("~/Documents/Notes"
+		       "~/Documents/writing"
 		       "~/Documents/noriparelius"
 		       "~/Documents/CompNotes")))
-    (progn
-      (nori-magit-push-directories directories)
-      ;;(nori-close-all-magit-processes-and-buffers)
-      )))
+    (nori-magit-push-directories directories)
+    (nori-close-all-magit-processes-and-buffers)))
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook

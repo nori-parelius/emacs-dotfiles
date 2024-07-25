@@ -316,7 +316,7 @@
 		       "~/Documents/noriparelius"
 		       "~/Documents/CompNotes")))
     (nori-magit-push-directories directories)
-    (sleep-for 1)
+    (sleep-for 3)
     (nori-close-all-magit-buffers)))
 
 

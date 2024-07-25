@@ -231,19 +231,7 @@
   ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
   )
 
-(defun nori-none ()
-  ;;Nothing
-  )
-
 (defun nori-wait-for-magit-processes ()
-  "Wait for all active Magit processes to complete."
-  (while (seq-some (lambda (proc)
-                     (and (process-live-p proc)
-                          (string-match-p "magit" (process-name proc))))
-                   (process-list))
-    (sleep-for 1)))
-
-(defun nori-wait-for-magit-processes2 ()
   "Wait for all active Magit processes to complete."
   (let ((running t))
     (while running
@@ -252,7 +240,7 @@
         (when (and (process-live-p proc)
                    (string-match-p "magit" (process-name proc)))
           (setq running t)))
-      (sleep-for 1))))
+      (sleep-for 5))))
 
 (defun nori-close-all-magit-buffers ()
   "Close all Magit buffers."
@@ -264,8 +252,10 @@
       (message "Killing Magit buffer: %s" (buffer-name buffer))
       (kill-buffer buffer))))
 
+
 (defun nori-close-all-magit-processes-and-buffers ()
   "Wait for all Magit processes to complete and then close all Magit buffers."
+  (interactive)
   (nori-wait-for-magit-processes)
   (nori-close-all-magit-buffers))
 

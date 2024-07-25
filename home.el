@@ -133,29 +133,6 @@
   ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
   )
 
-(defun nori-none ()
-  ;;Nothing
-  )
-
-(defun nori-wait-for-magit-processes ()
-  "Wait for all active Magit processes to complete."
-  (while (seq-some (lambda (proc)
-                     (and (process-live-p proc)
-                          (string-match-p "magit" (process-name proc))))
-                   (process-list))
-    (sleep-for 1)))
-
-(defun nori-wait-for-magit-processes2 ()
-  "Wait for all active Magit processes to complete."
-  (let ((running t))
-    (while running
-      (setq running nil)
-      (dolist (proc (process-list))
-        (when (and (process-live-p proc)
-                   (string-match-p "magit" (process-name proc)))
-          (setq running t)))
-      (sleep-for 1))))
-
 (defun nori-close-all-magit-buffers ()
   "Close all Magit buffers."
   (interactive)
@@ -165,11 +142,6 @@
                  (derived-mode-p 'magit-mode)))
       (message "Killing Magit buffer: %s" (buffer-name buffer))
       (kill-buffer buffer))))
-
-(defun nori-close-all-magit-processes-and-buffers ()
-  "Wait for all Magit processes to complete and then close all Magit buffers."
-  (nori-wait-for-magit-processes)
-  (nori-close-all-magit-buffers))
 
 
 (defun nori-magit-pull-if-no-unstaged-changes (directory)
@@ -203,7 +175,8 @@
 		       "~/.emacs.d/")))
     (progn
       (nori-magit-pull-directories directories)
-      (nori-close-all-magit-processes-and-buffers))))
+      (sleep-for 1)
+      (nori-close-all-magit-buffers))))
 
 
 (defun nori-magit-push-with-date (directory)
@@ -245,7 +218,8 @@
 		       "~/Documents/noriparelius"
 		       "~/Documents/CompNotes")))
     (nori-magit-push-directories directories)
-    (nori-close-all-magit-processes-and-buffers)))
+    (sleep-for 3)
+    (nori-close-all-magit-buffers)))
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook

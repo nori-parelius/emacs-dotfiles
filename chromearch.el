@@ -240,7 +240,7 @@
         (when (and (process-live-p proc)
                    (string-match-p "magit" (process-name proc)))
           (setq running t)))
-      (sleep-for 5))))
+      (sleep-for 0.1))))
 
 (defun nori-close-all-magit-buffers ()
   "Close all Magit buffers."
@@ -312,7 +312,11 @@
               (let ((commit-message (current-time-string)))
                 (magit-commit-create `("-m" ,commit-message))))
           ;; Push
-	  (magit-push-current-to-upstream nil)
+	  ;;(magit-push-current-to-upstream nil)
+	  (let ((branch (magit-get-current-branch)))
+	    ;; Push
+            (magit-run-git "push" "-v" "origin" (format "%s:%s" branch branch)))
+	  (message "Pushing")
 	  (magit-refresh)
 	  ))
       )))
@@ -333,7 +337,8 @@
 		       "~/Documents/noriparelius"
 		       "~/Documents/CompNotes")))
     (nori-magit-push-directories directories)
-    (nori-close-all-magit-processes-and-buffers)))
+    (nori-close-all-magit-processes-and-buffers)
+    ))
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook

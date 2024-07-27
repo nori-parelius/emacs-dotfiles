@@ -456,7 +456,7 @@ Inspo https://www.reddit.com/r/emacs/comments/10eq5sw/function_to_automate_magit
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
-(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit
+;;(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit
 
 #+end_src
 

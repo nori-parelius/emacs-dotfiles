@@ -244,7 +244,7 @@
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
-(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit
+;;(add-hook 'kill-emacs-hook #'nori-magit-push-my-dirs) ;; to run it on exit
  
 
 ;; Enable line numbers globally

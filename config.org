@@ -341,18 +341,134 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
 ** Extra functions
 *** AUTO PUSH and PULL for magit repos
 
+#+begin_src bash :tangle ~/.emacs.d/autopull.sh
+#!/bin/bash
+
+# Function to pull changes for a given repository
+function pull_changes {
+    local repo_path=$1
+
+    if [[ -z "$repo_path" ]]; then
+        echo "Repository path is required."
+        return 1
+    fi
+
+    if [[ ! -d "$repo_path" ]]; then
+        echo "Directory $repo_path does not exist."
+        return 1
+    fi
+
+    # Navigate to the Git repository
+    cd "$repo_path" || return 1
+
+    # Get the current branch
+    currentBranch=$(git symbolic-ref --short HEAD)
+
+    if [[ -z "$currentBranch" ]]; then
+        echo "Failed to determine the current branch in $repo_path."
+        return 1
+    fi
+
+    echo "Current branch in $repo_path: $currentBranch"
+
+    # Pull changes from the remote repository
+    echo "Pulling changes for branch $currentBranch..."
+    git pull origin "$currentBranch"
+}
+
+# List of repositories
+repos=(
+    "/home/nori/Documents/writing"
+    "/home/nori/Documents/noriparelius"
+    "/home/nori/Documents/Notes"
+    "/home/nori/Documents/CompNotes"
+    "/home/nori/.emacs.d"
+)
+
+# Iterate over the list and call the function for each repository
+for repo in "${repos[@]}"; do
+    pull_changes "$repo"
+done
+#+end_src
+
+#+begin_src bash :tangle ~/.emacs.d/autocommitpush.sh
+#!/bin/bash
+
+# Function to commit and push changes for a given repository
+function commit_and_push {
+    local repo_path=$1
+
+    if [[ -z "$repo_path" ]]; then
+        echo "Repository path is required."
+        return 1
+    fi
+
+    if [[ ! -d "$repo_path" ]]; then
+        echo "Directory $repo_path does not exist."
+        return 1
+    fi
+
+    # Navigate to the Git repository
+    cd "$repo_path" || return 1
+
+    # Get the current branch
+    currentBranch=$(git symbolic-ref --short HEAD)
+
+    if [[ -z "$currentBranch" ]]; then
+        echo "Failed to determine the current branch in $repo_path."
+        return 1
+    fi
+    
+    echo "Current branch in $repo_path: $currentBranch"
+
+    # Check for changes
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "Changes detected in $repo_path, staging changes..."
+        git add -A
+
+        # Get current date and time
+        currentDate=$(date +'%Y-%m-%d')
+        currentTime=$(date +'%H-%M')
+
+        # Commit changes with a message
+        echo "Committing changes..."
+        git commit -m "Automated commit on $currentDate at $currentTime"
+
+    else
+        echo "No changes to commit in $repo_path."
+    fi
+    # Push changes to the remote repository
+    echo "Pushing changes to $currentBranch..."
+    git push origin "$currentBranch"
+}
+
+# List of repositories
+repos=(
+    "/home/nori/Documents/writing"
+    "/home/nori/Documents/noriparelius"
+    "/home/nori/Documents/Notes"
+    "/home/nori/Documents/CompNotes"
+)
+
+# Iterate over the list and call the function for each repository
+for repo in "${repos[@]}"; do
+    commit_and_push "$repo"
+done
+
+#+end_src
+
 #+name: autopullpush
 #+begin_src elisp
 
 (defun nori-autopull ()
   "Run my git autopull Bash script."
   (interactive)
-  (shell-command "bash /home/nori/Documents/scripts/autopull.sh"))
+  (shell-command "bash /home/nori/.emacs.d/autopull.sh"))
 
 (defun nori-autopush ()
   "Run my git autocommitpush Bash script."
   (interactive)
-  (shell-command "bash /home/nori/Documents/scripts/autocommitpush.sh"))
+  (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
@@ -361,7 +477,7 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
 #+end_src
 
 #+RESULTS: autopullpush
-| nori-autopush | org-persist-gc | org-persist-write-all | org-persist-clear-storage-maybe | org-id-locations-save | org-babel-remove-temporary-stable-directory | org-babel-remove-temporary-directory | transient-maybe-save-history |
+| org-persist-gc | org-persist-write-all | org-persist-clear-storage-maybe | org-id-locations-save | nori-autopush | org-babel-remove-temporary-stable-directory | org-babel-remove-temporary-directory | transient-maybe-save-history |
 
 
 

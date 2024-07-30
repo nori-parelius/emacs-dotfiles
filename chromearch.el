@@ -234,12 +234,12 @@
 (defun nori-autopull ()
   "Run my git autopull Bash script."
   (interactive)
-  (shell-command "bash /home/nori/Documents/scripts/autopull.sh"))
+  (shell-command "bash /home/nori/.emacs.d/autopull.sh"))
 
 (defun nori-autopush ()
   "Run my git autocommitpush Bash script."
   (interactive)
-  (shell-command "bash /home/nori/Documents/scripts/autocommitpush.sh"))
+  (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook

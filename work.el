@@ -1,5 +1,3 @@
-(let ((roam-dir '"~/Documents/TheNotes/")
-      (bib-file '"/home/nori/Documents/TheNotes/biblio.bib"))
 ;; Enables basic packaging support
 (require 'package)
 
@@ -18,9 +16,9 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-;; MAGIT
-(use-package magit
-  :ensure t)
+;;;; MAGIT
+;;(use-package magit
+;;  :ensure t) works terribly on windows
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -133,26 +131,23 @@
   ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
   )
 
-(defun nori-autopull ()
-  "Run my git autopull Bash script."
+(defun nori-autopull-work ()
+  "Run my git autopull Batch file."
   (interactive)
-  (shell-command "bash /home/nori/.emacs.d/autopull.sh"))
+  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopull-work.bat"))
 
-(defun nori-autopush ()
-  "Run my git autocommitpush Bash script."
+(defun nori-autopush-work ()
+  "Run my git autocommitpush Batch file."
   (interactive)
-  (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
+  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopush-work.bat"))
 
-
-(add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
-
- 
+(add-hook 'kill-emacs-hook #'nori-autopush-work) ;; to run it on exit
+(nori-autopull-work)
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
 
-(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
-(nori-autopull)
+(setq package-install-upgrade-built-in t)
+
 ;; User-Defined init.el ends here
-)

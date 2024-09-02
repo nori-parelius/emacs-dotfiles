@@ -535,10 +535,9 @@ done
 
 ** Work config
 #+name: work 
-#+header: :var deft-dir="C:/Users/ELPAR/MyDocuments/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var agenda-files=(list "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_WorkNotes" "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/output")) :var roam-dir="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var bib-file="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib" 
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
 <<melpa>>
-<<magit>>
+;;<<magit>> works terribly on windows
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -551,18 +550,18 @@ done
 <<custom1>>
 <<mixed-pitch>>
 
-(defun nori-CompNotes-autopull ()
+(defun nori-autopull-work ()
   "Run my git autopull Batch file."
   (interactive)
-  (compile "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_Documents/gitpull.bat"))
+  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopull-work.bat"))
 
-(defun nori-CompNotes-autopush ()
+(defun nori-autopush-work ()
   "Run my git autocommitpush Batch file."
   (interactive)
-  (compile "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_Documents/gitpush.bat"))
+  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopush-work.bat"))
 
-;;(add-hook 'kill-emacs-hook #'nori-CompNotes-autopush) ;; to run it on exit
-(nori-CompNotes-autopull)
+(add-hook 'kill-emacs-hook #'nori-autopush-work) ;; to run it on exit
+(nori-autopull-work)
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

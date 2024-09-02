@@ -472,7 +472,7 @@ done
 
 
 (add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
-(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
+
 
 #+end_src
 
@@ -500,6 +500,7 @@ done
 <<mixed-pitch>>
 <<autopullpush>> 
 
+(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)
 ;; User-Defined init.el ends here
 #+end_src
@@ -527,10 +528,50 @@ done
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
 
+(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)
 ;; User-Defined init.el ends here
 #+end_src
 
+** Work config
+#+name: work 
+#+header: :var deft-dir="C:/Users/ELPAR/MyDocuments/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var agenda-files=(list "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_WorkNotes" "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/output")) :var roam-dir="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes" :var bib-file="C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/TheNotes/biblio.bib" 
+#+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
+<<melpa>>
+<<magit>>
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+<<ox-hugo>>
+<<languagetool>>
+<<theme>>
+
+<<custom1>>
+<<mixed-pitch>>
+
+(defun nori-CompNotes-autopull ()
+  "Run my git autopull Batch file."
+  (interactive)
+  (compile "C:\Users\ELPAR\OneDrive - Forsvarets forskningsinstitutt\_Documents\gitpull.bat"))
+
+(defun nori-CompNotes-autopush ()
+  "Run my git autocommitpush Batch file."
+  (interactive)
+  (compile "C:\Users\ELPAR\OneDrive - Forsvarets forskningsinstitutt\_Documents\gitpush.bat"))
+
+;;(add-hook 'kill-emacs-hook #'nori-CompNotes-autopush) ;; to run it on exit
+(nori-CompNotes-autopull)
+
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+(global-display-line-numbers-mode t)
+
+(setq package-install-upgrade-built-in t)
+
+;; User-Defined init.el ends here
+#+end_src
 
 ** Init.el file
 The only thing happening here is chosing which config to load, depending on which machine I am on.
@@ -541,6 +582,8 @@ I figured the easiest was to distinguish them by the name of the computer.
    ((equal system-name "myarch")
     (load "~/.emacs.d/chromearch.el"))
    ((equal system-name "nori-MS-7982")
-    (load "~/.emacs.d/home.el")))
+    (load "~/.emacs.d/home.el"))
+   ((equal system-name "MU386U")
+    (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
 #+end_src
 

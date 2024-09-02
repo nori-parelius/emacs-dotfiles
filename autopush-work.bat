@@ -46,4 +46,4 @@ REM Push changes to the remote repository
 echo Pushing changes...
 git push origin master
 
-REM can add 'pause' to wait 
+REM can add 'pause' to wait

@@ -141,7 +141,7 @@
   (interactive)
   (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopush-work.bat"))
 
-(add-hook 'kill-emacs-hook #'nori-autopush-work) ;; to run it on exit
+;;(add-hook 'kill-emacs-hook #'nori-autopush-work) ;; doesn't work, it's async
 (nori-autopull-work)
 
 ;; Enable line numbers globally

@@ -554,12 +554,12 @@ done
 (defun nori-CompNotes-autopull ()
   "Run my git autopull Batch file."
   (interactive)
-  (compile "C:\Users\ELPAR\OneDrive - Forsvarets forskningsinstitutt\_Documents\gitpull.bat"))
+  (compile "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_Documents/gitpull.bat"))
 
 (defun nori-CompNotes-autopush ()
   "Run my git autocommitpush Batch file."
   (interactive)
-  (compile "C:\Users\ELPAR\OneDrive - Forsvarets forskningsinstitutt\_Documents\gitpush.bat"))
+  (compile "C:/Users/ELPAR/OneDrive - Forsvarets forskningsinstitutt/_Documents/gitpush.bat"))
 
 ;;(add-hook 'kill-emacs-hook #'nori-CompNotes-autopush) ;; to run it on exit
 (nori-CompNotes-autopull)

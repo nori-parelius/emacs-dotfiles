@@ -27,6 +27,7 @@ git push origin master
 
 REM Then .emacs.d
 cd "C:\Users\ELPAR\AppData\Roaming\.emacs.d"
+echo %cd%
 
 git status --porcelain
 IF NOT ERRORLEVEL 1 (

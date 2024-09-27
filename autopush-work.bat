@@ -47,4 +47,26 @@ REM Push changes to the remote repository
 echo Pushing changes...
 git push origin master
 
+REM Then Notes
+cd "C:\Users\ELPAR\MyDocuments\Notes"
+echo %cd%
+
+git status --porcelain
+IF NOT ERRORLEVEL 1 (
+    echo Changes detected, staging changes...
+    git add -A
+
+
+
+    REM Commit changes with a message
+    echo Commiting changes...
+    git commit -m "Automated commit on %mydate% at %mytime%"
+) ELSE (
+    echo No changes to commit.
+)
+
+REM Push changes to the remote repository
+echo Pushing changes...
+git push origin master
+
 REM can add 'pause' to wait

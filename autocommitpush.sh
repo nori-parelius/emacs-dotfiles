@@ -50,10 +50,9 @@ function commit_and_push {
 
 # List of repositories
 repos=(
-    "/home/nori/Documents/writing"
     "/home/nori/Documents/noriparelius"
     "/home/nori/Documents/Notes"
-    "/home/nori/Documents/CompNotes"
+
 )
 
 # Iterate over the list and call the function for each repository

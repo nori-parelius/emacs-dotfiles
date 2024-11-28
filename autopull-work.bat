@@ -7,3 +7,4 @@ cd "C:\Users\ELPAR\MyDocuments\Notes"
 git pull origin master
 
 REM can add 'pause'
+pause

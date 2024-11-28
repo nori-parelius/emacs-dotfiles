@@ -49,3 +49,4 @@ echo Pushing changes...
 git push origin master
 
 REM can add 'pause' to wait
+pause

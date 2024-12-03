@@ -50,8 +50,8 @@ function commit_and_push {
 
 # List of repositories
 repos=(
-    "/home/nori/Documents/noriparelius"
-    "/home/nori/Documents/Notes"
+    "/home/nori/Documents/AllWritings/noriparelius"
+    "/home/nori/Documents/AllWritings/Notes"
 
 )
 

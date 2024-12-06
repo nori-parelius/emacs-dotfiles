@@ -27,7 +27,7 @@ echo Pushing changes...
 git push origin master
 
 REM Then Notes
-cd "C:\Users\ELPAR\MyDocuments\Notes"
+cd "C:\Users\ELPAR\OneDrive - Forsvarets forskningsinstitutt\_Documents\Reference System\AllNotes\Notes"
 echo %cd%
 
 git status --porcelain

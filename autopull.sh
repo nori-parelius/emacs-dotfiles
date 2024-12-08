@@ -31,8 +31,6 @@ function pull_changes {
     echo "Pulling changes for branch $currentBranch..."
     git pull origin "$currentBranch"
 
-    read -p "Press enter to continue"
-
 }
 
 # List of repositories
@@ -46,3 +44,4 @@ repos=(
 for repo in "${repos[@]}"; do
     pull_changes "$repo"
 done
+read -p "Press enter to continue"

@@ -47,8 +47,6 @@ function commit_and_push {
     echo "Pushing changes to $currentBranch..."
     git push origin "$currentBranch"
 
-    read -p "Press enter to continue"
-
 }
 
 # List of repositories
@@ -62,3 +60,5 @@ repos=(
 for repo in "${repos[@]}"; do
     commit_and_push "$repo"
 done
+
+read -p "Press enter to continue"

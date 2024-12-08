@@ -30,6 +30,9 @@ function pull_changes {
     # Pull changes from the remote repository
     echo "Pulling changes for branch $currentBranch..."
     git pull origin "$currentBranch"
+
+    read -p "Press enter to continue"
+
 }
 
 # List of repositories

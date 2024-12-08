@@ -46,6 +46,9 @@ function commit_and_push {
     # Push changes to the remote repository
     echo "Pushing changes to $currentBranch..."
     git push origin "$currentBranch"
+
+    read -p "Press enter to continue"
+
 }
 
 # List of repositories

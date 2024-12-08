@@ -374,6 +374,9 @@ function pull_changes {
     # Pull changes from the remote repository
     echo "Pulling changes for branch $currentBranch..."
     git pull origin "$currentBranch"
+
+    read -p "Press enter to continue"
+
 }
 
 # List of repositories
@@ -438,6 +441,9 @@ function commit_and_push {
     # Push changes to the remote repository
     echo "Pushing changes to $currentBranch..."
     git push origin "$currentBranch"
+
+    read -p "Press enter to continue"
+
 }
 
 # List of repositories
@@ -477,30 +483,6 @@ done
 | org-persist-gc | org-persist-write-all | org-persist-clear-storage-maybe | org-id-locations-save | nori-autopush | org-babel-remove-temporary-stable-directory | org-babel-remove-temporary-directory | transient-maybe-save-history |
 
 
-
-** Chromearch config
-#+name: chromearch
-#+header: :var deft-dir="~/Documents/TheNotes/" :var agenda-files=(list "~/Documents/TheNotes/20230228174603-stream.org" "~/Documents/TheNotes/output")) :var roam-dir="~/Documents/TheNotes/" :var bib-file="/home/nori/Documents/TheNotes/biblio.bib" 
-#+begin_src elisp :tangle ~/.emacs.d/chromearch.el :noweb strip-export
-<<melpa>>
-<<magit>>
-<<org-babel>>
-<<vertico>>
-<<orderless>>
-<<marginalia>>
-<<embark>>
-<<ox-hugo>>
-<<languagetool>>
-<<theme>>
-<<exwm>>
-<<custom1>>
-<<mixed-pitch>>
-<<autopullpush>> 
-
-(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
-(nori-autopull)
-;; User-Defined init.el ends here
-#+end_src
 
 ** Home config
 #+name: home
@@ -575,8 +557,6 @@ I figured the easiest was to distinguish them by the name of the computer.
 
 #+begin_src elisp :tangle ~/.emacs.d/init.el :noweb strip-export :results output
   (cond
-   ((equal system-name "myarch")
-    (load "~/.emacs.d/chromearch.el"))
    ((equal system-name "NoriPCdebian")
     (load "~/.emacs.d/home.el"))
    ((equal system-name "MU386U")

@@ -36,7 +36,6 @@ function pull_changes {
 # List of repositories
 repos=(
     "/home/nori/Documents/AllWritings/noriparelius"
-    "/home/nori/Documents/AllWritings/Notes"
     "/home/nori/.emacs.d"
 )
 

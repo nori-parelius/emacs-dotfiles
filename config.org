@@ -404,31 +404,18 @@ read -p "Press enter to continue"
 <<orderless>>
 <<marginalia>>
 <<embark>>
-<<ox-hugo>>
-<<languagetool>>
+;; <<ox-hugo>>
+;; <<languagetool>>
 <<theme>>
 
 <<custom1>>
 <<mixed-pitch>>
 
-(defun nori-autopull-work ()
-  "Run my git autopull Batch file."
-  (interactive)
-  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopull-work.bat"))
-
-(defun nori-autopush-work ()
-  "Run my git autocommitpush Batch file."
-  (interactive)
-  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopush-work.bat"))
-
-;;(add-hook 'kill-emacs-hook #'nori-autopush-work) ;; doesn't work, it's async
-(nori-autopull-work)
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
 
-(setq package-install-upgrade-built-in t)
 
 ;; User-Defined init.el ends here
 #+end_src
@@ -441,7 +428,7 @@ I figured the easiest was to distinguish them by the name of the computer.
   (cond
    ((equal system-name "NoriPCdebian")
     (load "~/.emacs.d/home.el"))
-   ((equal system-name "MU386U")
+   ((equal system-name "")
     (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
 #+end_src
 

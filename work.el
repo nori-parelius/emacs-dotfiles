@@ -93,6 +93,7 @@
 ;; Basic Customization
 ;; ===================================
 
+;; Allow for manual resizing of images in org.
 ;; Set org-image width to nil, so it can be set manually
 (setq org-image-actual-width nil)
 
@@ -103,6 +104,7 @@
 (setq visible-bell 1)
 
 ;; Auto save buffer if idled for 2 seconds.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
 (setq auto-save-timeout 2)
 (auto-save-visited-mode +1)
 
@@ -111,12 +113,14 @@
 (setq auto-revert-remote-files t)
 
 ;; Delete the selected text first before editing.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
 (delete-selection-mode +1)
 
 ;; Disable splash screen
 (setq inhibit-startup-message t)
 
 ;; Smooth Scrolling
+;; https://www.emacswiki.org/emacs/SmoothScrolling.
 (setq scroll-conservatively 10000
       scroll-step 1)
 

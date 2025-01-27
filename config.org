@@ -172,15 +172,6 @@ Changing to ef-themes from Protesilaos from modus themes.
 
 *** A few things I always want
 Various settings that I always want.
-(- Start citar-org-roam.)
-- Allow for manual resizing of images in org.
-- Increase size of latex fragments.
-- Enable word wrap.
-- Use visual bell instead of the horrible sound.
-- Autosaving and reloading from disk comes from  https://whhone.com/emacs-config/#taking-note-with-org-roam.
-- Delete selection before pasting over also from https://whhone.com/emacs-config/#taking-note-with-org-roam.
-- Disable splash screen.
-- Smooth scrolling is from https://www.emacswiki.org/emacs/SmoothScrolling.
 
 #+name: custom1
 #+begin_src elisp
@@ -188,6 +179,7 @@ Various settings that I always want.
 ;; Basic Customization
 ;; ===================================
 
+;; Allow for manual resizing of images in org.
 ;; Set org-image width to nil, so it can be set manually
 (setq org-image-actual-width nil)
 
@@ -198,6 +190,7 @@ Various settings that I always want.
 (setq visible-bell 1)
 
 ;; Auto save buffer if idled for 2 seconds.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
 (setq auto-save-timeout 2)
 (auto-save-visited-mode +1)
 
@@ -206,12 +199,14 @@ Various settings that I always want.
 (setq auto-revert-remote-files t)
 
 ;; Delete the selected text first before editing.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
 (delete-selection-mode +1)
 
 ;; Disable splash screen
 (setq inhibit-startup-message t)
 
 ;; Smooth Scrolling
+;; https://www.emacswiki.org/emacs/SmoothScrolling.
 (setq scroll-conservatively 10000
       scroll-step 1)
 
@@ -365,10 +360,6 @@ read -p "Press enter to continue"
   (interactive)
   (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
 
-
-(add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
-
-
 #+end_src
 
 #+RESULTS: autopullpush
@@ -378,7 +369,6 @@ read -p "Press enter to continue"
 
 ** Home config
 #+name: home
-#+header: :var roam-dir="~/Documents/TheNotes/" :var bib-file="/home/nori/Documents/TheNotes/biblio.bib" 
 #+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
 <<melpa>>
 <<magit>>

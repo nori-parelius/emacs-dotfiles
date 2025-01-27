@@ -1,5 +1,3 @@
-(let ((roam-dir '"~/Documents/TheNotes/")
-      (bib-file '"/home/nori/Documents/TheNotes/biblio.bib"))
 ;; Enables basic packaging support
 (require 'package)
 
@@ -95,6 +93,7 @@
 ;; Basic Customization
 ;; ===================================
 
+;; Allow for manual resizing of images in org.
 ;; Set org-image width to nil, so it can be set manually
 (setq org-image-actual-width nil)
 
@@ -105,6 +104,7 @@
 (setq visible-bell 1)
 
 ;; Auto save buffer if idled for 2 seconds.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
 (setq auto-save-timeout 2)
 (auto-save-visited-mode +1)
 
@@ -113,12 +113,14 @@
 (setq auto-revert-remote-files t)
 
 ;; Delete the selected text first before editing.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
 (delete-selection-mode +1)
 
 ;; Disable splash screen
 (setq inhibit-startup-message t)
 
 ;; Smooth Scrolling
+;; https://www.emacswiki.org/emacs/SmoothScrolling.
 (setq scroll-conservatively 10000
       scroll-step 1)
 
@@ -142,10 +144,6 @@
   "Run my git autocommitpush Bash script."
   (interactive)
   (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
-
-
-(add-to-list 'magit-no-confirm 'stage-all-changes) ;; not to be asked to stage all changes, so I can have the next hook
-
  
 
 ;; Enable line numbers globally
@@ -155,4 +153,3 @@
 (add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)
 ;; User-Defined init.el ends here
-)

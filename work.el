@@ -59,27 +59,27 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;; OX-HUGO
-(use-package ox-hugo
-  :ensure t
-  :pin melpa
-  :after ox
-  )
-(use-package languagetool
-  :ensure t
-  :defer t
-  :commands (languagetool-check
-             languagetool-clear-suggestions
-             languagetool-correct-at-point
-             languagetool-correct-buffer
-             languagetool-set-language
-             languagetool-server-mode
-             languagetool-server-start
-             languagetool-server-stop)
-  :config
-  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
-        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
+;; ;; OX-HUGO
+;; (use-package ox-hugo
+;;   :ensure t
+;;   :pin melpa
+;;   :after ox
+;;   )
+;; (use-package languagetool
+;;   :ensure t
+;;   :defer t
+;;   :commands (languagetool-check
+;;              languagetool-clear-suggestions
+;;              languagetool-correct-at-point
+;;              languagetool-correct-buffer
+;;              languagetool-set-language
+;;              languagetool-server-mode
+;;              languagetool-server-start
+;;              languagetool-server-stop)
+;;   :config
+;;   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+;;         languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
+;;         languagetool-server-command "~/.languagetool/languagetool-server.jar"))
 ;; THEME
 (require 'ef-themes)
 
@@ -135,23 +135,10 @@
   ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
   )
 
-(defun nori-autopull-work ()
-  "Run my git autopull Batch file."
-  (interactive)
-  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopull-work.bat"))
-
-(defun nori-autopush-work ()
-  "Run my git autocommitpush Batch file."
-  (interactive)
-  (compile "C:/Users/ELPAR/AppData/Roaming/.emacs.d/autopush-work.bat"))
-
-;;(add-hook 'kill-emacs-hook #'nori-autopush-work) ;; doesn't work, it's async
-(nori-autopull-work)
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
 
-(setq package-install-upgrade-built-in t)
 
 ;; User-Defined init.el ends here

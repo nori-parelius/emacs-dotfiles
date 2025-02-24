@@ -221,11 +221,13 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
   :ensure t
   :hook
   (text-mode . mixed-pitch-mode)
-  ;;:config
-  ;;(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
-  ;;(set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
-  ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
+  :config
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
+  (set-face-attribute 'variable-pitch nil :font "Lato")
   )
+
+
 #+end_src
 
 ** Extra functions
@@ -394,6 +396,34 @@ read -p "Press enter to continue"
 ;; User-Defined init.el ends here
 #+end_src
 
+** Chrome config
+#+name: chrome
+#+begin_src elisp :tangle ~/.emacs.d/chrome.el :noweb strip-export
+<<melpa>>
+;; <<magit>>
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+;; <<ox-hugo>>
+;; <<languagetool>>
+<<theme>>
+
+<<custom1>>
+<<mixed-pitch>>
+<<autopullpush>> 
+
+
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+;; (global-display-line-numbers-mode t)
+
+(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
+(nori-autopull)
+;; User-Defined init.el ends here
+#+end_src
+
 ** Work config
 #+name: work 
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
@@ -428,6 +458,8 @@ I figured the easiest was to distinguish them by the name of the computer.
   (cond
    ((equal system-name "NoriPCdebian")
     (load "~/.emacs.d/home.el"))
+   ((equal system-name "debchrome")
+    (load "~/.emacs.d/chrome.el"))
    ((equal system-name "")
     (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
 #+end_src

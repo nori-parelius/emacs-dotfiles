@@ -129,11 +129,13 @@
   :ensure t
   :hook
   (text-mode . mixed-pitch-mode)
-  ;;:config
-  ;;(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
-  ;;(set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
-  ;;(set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
+  :config
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
+  (set-face-attribute 'variable-pitch nil :font "Lato")
   )
+
+
 
 
 ;; Enable line numbers globally

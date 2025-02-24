@@ -16,9 +16,9 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-;; MAGIT
-(use-package magit
-  :ensure t)
+;; ;; MAGIT
+;; (use-package magit
+;;   :ensure t)
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -59,27 +59,27 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;; OX-HUGO
-(use-package ox-hugo
-  :ensure t
-  :pin melpa
-  :after ox
-  )
-(use-package languagetool
-  :ensure t
-  :defer t
-  :commands (languagetool-check
-             languagetool-clear-suggestions
-             languagetool-correct-at-point
-             languagetool-correct-buffer
-             languagetool-set-language
-             languagetool-server-mode
-             languagetool-server-start
-             languagetool-server-stop)
-  :config
-  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
-        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
+;; ;; OX-HUGO
+;; (use-package ox-hugo
+;;   :ensure t
+;;   :pin melpa
+;;   :after ox
+;;   )
+;; (use-package languagetool
+;;   :ensure t
+;;   :defer t
+;;   :commands (languagetool-check
+;;              languagetool-clear-suggestions
+;;              languagetool-correct-at-point
+;;              languagetool-correct-buffer
+;;              languagetool-set-language
+;;              languagetool-server-mode
+;;              languagetool-server-start
+;;              languagetool-server-stop)
+;;   :config
+;;   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+;;         languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
+;;         languagetool-server-command "~/.languagetool/languagetool-server.jar"))
 ;; THEME
 (require 'ef-themes)
 
@@ -148,9 +148,10 @@
   (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
  
 
+
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
-(global-display-line-numbers-mode t)
+;; (global-display-line-numbers-mode t)
 
 (add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)

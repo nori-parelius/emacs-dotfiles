@@ -124,6 +124,15 @@
 (setq scroll-conservatively 10000
       scroll-step 1)
 
+(use-package markdown-mode
+  :ensure t
+  )
+
+(use-package darkroom
+  :ensure t
+  )
+
+
 ;; MIXED-PITCH
 (use-package mixed-pitch
   :ensure t
@@ -132,7 +141,7 @@
   :config
   (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
   (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
-  (set-face-attribute 'variable-pitch nil :font "Lato")
+  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
   )
 
 

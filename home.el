@@ -19,6 +19,22 @@
 ;; MAGIT
 (use-package magit
   :ensure t)
+(setq org-capture-templates
+      '(("k" "Keeper Entry" entry
+	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
+	 "** %^{Title} :keeper:
+:PROPERTIES:
+:JournalNumber: %^{Journal Number}
+:JournalPage: %^{Journal Page}
+:Date: %<%Y-%m-%d>
+:END:
+- *From:* %^{Source}
+- *Tag:* %^{Tags}
+- *Idea:* %^{Idea}
+- *Why it matters:* %^{Why it matters}")
+	("i" "Inbox Entry" entry
+	 (file+headline "~/Documents/Notes/keepers.org" "Inbox")
+	 "** %^{Note}")))      
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages

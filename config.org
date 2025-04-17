@@ -33,6 +33,32 @@ Melpa and use-package for installing and handling packages
   (package-install 'use-package))
 #+end_src
 
+** ORG
+
+#+name: org
+#+begin_src elisp
+(setq org-capture-templates
+      '(("k" "Keeper Entry" entry
+	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
+	 "** %^{Title} :keeper:
+:PROPERTIES:
+:JournalNumber: %^{Journal Number}
+:JournalPage: %^{Journal Page}
+:Date: %<%Y-%m-%d>
+:END:
+- *From:* %^{Source}
+- *Tag:* %^{Tags}
+- *Idea:* %^{Idea}
+- *Why it matters:* %^{Why it matters}")
+	("i" "Inbox Entry" entry
+	 (file+headline "~/Documents/Notes/keepers.org" "Inbox")
+	 "** %^{Note}")))      
+#+end_src
+
+#+RESULTS: org
+| k | Keeper Entry | entry | (file+headline ~/Documents/Notes/keepers.org Keeper index) | %? |
+
+
 ** MAGIT
 For GIT straight from Emacs.
 
@@ -383,6 +409,7 @@ read -p "Press enter to continue"
 #+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
 <<melpa>>
 <<magit>>
+<<org>>
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -410,6 +437,7 @@ read -p "Press enter to continue"
 #+begin_src elisp :tangle ~/.emacs.d/chrome.el :noweb strip-export
 <<melpa>>
 ;; <<magit>>
+<<org>>
 <<org-babel>>
 <<vertico>>
 <<orderless>>

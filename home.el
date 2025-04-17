@@ -1,12 +1,14 @@
 ;; Enables basic packaging support
 (require 'package)
+(unless package-archive-contents
+  (package-refresh-contents))
+
 
 ;; MELPA
 ;; Adds the Melpa archive to the list of available repositories
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/")
-	     '("gnu" . "https://elpa.gnu.org/packages/")
-	     )
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
 
 ;; Initializes the package infrastructure
 (package-initialize)
@@ -22,19 +24,29 @@
 (setq org-capture-templates
       '(("k" "Keeper Entry" entry
 	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
-	 "** %^{Title} :keeper:
+	 "** %^{Title} :keeper:%^{Tags (colon-separated)}:
 :PROPERTIES:
 :JournalNumber: %^{Journal Number}
 :JournalPage: %^{Journal Page}
-:Date: %<%Y-%m-%d>
+:CREATED: %U
 :END:
 - *From:* %^{Source}
-- *Tag:* %^{Tags}
 - *Idea:* %^{Idea}
 - *Why it matters:* %^{Why it matters}")
 	("i" "Inbox Entry" entry
 	 (file+headline "~/Documents/Notes/keepers.org" "Inbox")
-	 "** %^{Note}")))      
+	 "** %^{Note}\n:CREATED: %U")
+	("s" "Source Entry" entry
+	 (file+headline "~/Documents/Notes/keepers.org" "Sources")
+	 "** %^{Source codename} :source:
+:PROPERTIES:
+:Type: %^{Type|book,article,video,other|}
+:Title: %^{Title}
+:Author: %^{Author| }
+:Year: %^{Year| }
+:Link: %^{Link| }
+:CREATED: %U
+:END:")))      
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -77,6 +89,7 @@
   )
 ;; OX-HUGO
 (use-package ox-hugo
+  :after (org)
   :ensure t
   :pin melpa
   :after ox
@@ -148,6 +161,9 @@
   :ensure t
   )
 
+;; Line numbers in terminal
+(when (display-graphic-p)
+  (global-display-line-numbers-mode))
 
 ;; MIXED-PITCH
 (use-package mixed-pitch

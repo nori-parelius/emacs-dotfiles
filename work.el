@@ -1,12 +1,14 @@
 ;; Enables basic packaging support
 (require 'package)
+(unless package-archive-contents
+  (package-refresh-contents))
+
 
 ;; MELPA
 ;; Adds the Melpa archive to the list of available repositories
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/")
-	     '("gnu" . "https://elpa.gnu.org/packages/")
-	     )
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
 
 ;; Initializes the package infrastructure
 (package-initialize)
@@ -61,6 +63,7 @@
   )
 ;; ;; OX-HUGO
 ;; (use-package ox-hugo
+;;   :after (org)
 ;;   :ensure t
 ;;   :pin melpa
 ;;   :after ox
@@ -132,6 +135,9 @@
   :ensure t
   )
 
+;; Line numbers in terminal
+(when (display-graphic-p)
+  (global-display-line-numbers-mode))
 
 ;; MIXED-PITCH
 (use-package mixed-pitch

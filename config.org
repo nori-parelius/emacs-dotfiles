@@ -72,7 +72,7 @@ Melpa and use-package for installing and handling packages
 
 ** DENOTE
 #+name: denote
-#+begin_src elisp
+#+begin_src elisp :var denote-dir="~/Documents/Notes/denote"
 (use-package denote
   :ensure t
   :hook (dired-mode . denote-dired-mode)
@@ -84,7 +84,7 @@ Melpa and use-package for installing and handling packages
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name "~/Documents/Notes/denote"))
+  (setq denote-directory (expand-file-name denote-dir))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
   ;; Automatically rename Denote buffers when opening them so that
@@ -94,7 +94,6 @@ Melpa and use-package for installing and handling packages
   (denote-rename-buffer-mode 1)
   )
 #+end_src
-
 
 ** MAGIT
 For GIT straight from Emacs.
@@ -447,11 +446,12 @@ read -p "Press enter to continue"
 
 ** Home config
 #+name: home
+#+header: :var denote-dir="~/Documents/Notes/denote"
 #+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
 <<melpa>>
-<<magit>>
 <<org>>
 <<denote>>
+<<magit>>
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -476,11 +476,12 @@ read -p "Press enter to continue"
 
 ** Chrome config
 #+name: chrome
+#+header: :var denote-dir="~/Documents/Notes/denote"
 #+begin_src elisp :tangle ~/.emacs.d/chrome.el :noweb strip-export
 <<melpa>>
-;; <<magit>>
 <<org>>
 <<denote>>
+;; <<magit>>
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -505,9 +506,12 @@ read -p "Press enter to continue"
 #+end_src
 
 ** Work config
-#+name: work 
+#+name: work
+#+header: :var denote-dir="C:/Users/elpar/OneDrive - Forsvarets forskningsinstitutt/MyDocs/Refs"
 #+begin_src elisp :tangle ~/.emacs.d/work.el :noweb strip-export
 <<melpa>>
+;;<<org>>
+<<denote>>
 ;;<<magit>> works terribly on windows
 <<org-babel>>
 <<vertico>>
@@ -540,7 +544,7 @@ I figured the easiest was to distinguish them by the name of the computer.
     (load "~/.emacs.d/home.el"))
    ((equal system-name "debchrome")
     (load "~/.emacs.d/chrome.el"))
-   ((equal system-name "")
+   ((equal system-name "WIN-5CG504173W")
     (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
 #+end_src
 

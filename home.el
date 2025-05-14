@@ -1,3 +1,4 @@
+(let ((denote-dir '"~/Documents/Notes/denote"))
 ;; Enables basic packaging support
 (require 'package)
 (unless package-archive-contents
@@ -18,9 +19,6 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-;; MAGIT
-(use-package magit
-  :ensure t)
 (setq org-capture-templates
       '(("k" "Keeper Entry" entry
 	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
@@ -58,7 +56,7 @@
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name "~/Documents/Notes/denote"))
+  (setq denote-directory (expand-file-name denote-dir))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
   ;; Automatically rename Denote buffers when opening them so that
@@ -67,6 +65,9 @@
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1)
   )
+;; MAGIT
+(use-package magit
+  :ensure t)
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -216,3 +217,4 @@
 (add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)
 ;; User-Defined init.el ends here
+)

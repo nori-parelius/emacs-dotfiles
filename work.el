@@ -1,3 +1,4 @@
+(let ((denote-dir '"C:/Users/elpar/OneDrive - Forsvarets forskningsinstitutt/MyDocs/Refs"))
 ;; Enables basic packaging support
 (require 'package)
 (unless package-archive-contents
@@ -18,6 +19,52 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+;;(setq org-capture-templates
+;;      '(("k" "Keeper Entry" entry
+;;	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
+;;	 "** %^{Title} :keeper:%^{Tags (colon-separated)}:
+;;:PROPERTIES:
+;;:JournalNumber: %^{Journal Number}
+;;:JournalPage: %^{Journal Page}
+;;:CREATED: %U
+;;:END:
+;;- *From:* %^{Source}
+;;- *Idea:* %^{Idea}
+;;- *Why it matters:* %^{Why it matters}")
+;;	("i" "Inbox Entry" entry
+;;	 (file+headline "~/Documents/Notes/keepers.org" "Inbox")
+;;	 "** %^{Note}\n:CREATED: %U")
+;;	("s" "Source Entry" entry
+;;	 (file+headline "~/Documents/Notes/keepers.org" "Sources")
+;;	 "** %^{Source codename} :source:
+;;:PROPERTIES:
+;;:Type: %^{Type|book,article,video,other|}
+;;:Title: %^{Title}
+;;:Author: %^{Author| }
+;;:Year: %^{Year| }
+;;:Link: %^{Link| }
+;;:CREATED: %U
+;;:END:")))      
+(use-package denote
+  :ensure t
+  :hook (dired-mode . denote-dired-mode)
+  :bind
+  (("C-c n n" . denote)
+   ("C-c n r" . denote-rename-file)
+   ("C-c n l" . denote-link)
+   ("C-c n b" . denote-backlinks)
+   ("C-c n d" . denote-dired)
+   ("C-c n g" . denote-grep))
+  :config
+  (setq denote-directory (expand-file-name denote-dir))
+  ;; When creating a note from another, automatically link to it
+  ;; (setq denote-link-after-creating t)
+  ;; Automatically rename Denote buffers when opening them so that
+  ;; instead of their long file name they have, for example, a literal
+  ;; "[D]" followed by the file's title.  Read the doc string of
+  ;; `denote-rename-buffer-format' for how to modify this.
+  (denote-rename-buffer-mode 1)
+  )
 ;;;; MAGIT
 ;;(use-package magit
 ;;  :ensure t) works terribly on windows
@@ -159,3 +206,4 @@
 
 
 ;; User-Defined init.el ends here
+)

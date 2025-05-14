@@ -1,4 +1,10 @@
 (let ((denote-dir '"C:/Users/elpar/OneDrive - Forsvarets forskningsinstitutt/MyDocs/Refs"))
+;; Get Emacs to use xargs and grep and other stuff that is not on Windows
+;; The easiest way is to do it through GIT
+(let ((git-bin "C:/Program Files/Git/usr/bin"))
+  (setenv "PATH" (concat git-bin ";" (getenv "PATH")))
+  (add-to-list 'exec-path git-bin))
+
 ;; Enables basic packaging support
 (require 'package)
 (unless package-archive-contents

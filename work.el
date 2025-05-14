@@ -56,7 +56,7 @@
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name denote-dir))
+  (setq denote-directory (expand-file-name "C:/Users/elpar/OneDrive - Forsvarets forskningsinstitutt/MyDocs/Refs"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
   ;; Automatically rename Denote buffers when opening them so that

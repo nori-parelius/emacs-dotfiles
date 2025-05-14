@@ -25,6 +25,15 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+;; ENV
+;; Set locale and encoding for better subprocess compatibility
+(setenv "LC_TIME" "C")      ; English day/month/month names
+(setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
+(setenv "LANG" "C")
+(set-language-environment "English")
+(prefer-coding-system 'utf-8)
+
 ;;(setq org-capture-templates
 ;;      '(("k" "Keeper Entry" entry
 ;;	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
@@ -71,9 +80,10 @@
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1)
   )
-;;;; MAGIT
-;;(use-package magit
-;;  :ensure t) works terribly on windows
+;; MAGIT
+(use-package magit
+  :ensure t
+)
 ;; ORG-BABEL
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -198,9 +208,9 @@
   :hook
   (text-mode . mixed-pitch-mode)
   :config
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
-  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
-  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
+  (set-face-attribute 'default nil :font "Courier New" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "Courier New")
+  (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
   )
 
 

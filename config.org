@@ -8,7 +8,7 @@ Some inspiration comes from David Wilson's wonderful /Emacs from scratch/ https:
 
 I decided to make a literate config file mostly because of the different versions I need for my different machines, and this makes it easier to keep track of them. 
 
-** MELPA and USE-PACKAGE
+** MELPA and USE-PACKAGE and ENV variables
 Melpa and use-package for installing and handling packages
 
 #+name: melpa 
@@ -33,6 +33,15 @@ Melpa and use-package for installing and handling packages
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+;; ENV
+;; Set locale and encoding for better subprocess compatibility
+(setenv "LC_TIME" "C")      ; English day/month/month names
+(setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
+(setenv "LANG" "C")
+(set-language-environment "English")
+(prefer-coding-system 'utf-8)
+
 #+end_src
 
 ** ORG
@@ -126,7 +135,8 @@ For GIT straight from Emacs.
 #+begin_src elisp
 ;; MAGIT
 (use-package magit
-  :ensure t)
+  :ensure t
+)
 #+end_src
 
 ** ORG-BABEL
@@ -321,9 +331,9 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
   :hook
   (text-mode . mixed-pitch-mode)
   :config
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
-  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
-  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans")
+  (set-face-attribute 'default nil :font "Courier New" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "Courier New")
+  (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
   )
 
 
@@ -542,7 +552,7 @@ read -p "Press enter to continue"
 <<melpa>>
 ;;<<org>>
 <<denote-work>>
-;;<<magit>> works terribly on windows
+<<magit>>
 <<org-babel>>
 <<vertico>>
 <<orderless>>
@@ -574,7 +584,7 @@ I figured the easiest was to distinguish them by the name of the computer.
     (load "~/.emacs.d/home.el"))
    ((equal system-name "debchrome")
     (load "~/.emacs.d/chrome.el"))
-   ((equal system-name "WIN-5CG504173W")
+   ((equal system-type 'windows-nt)
     (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
 #+end_src
 

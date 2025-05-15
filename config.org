@@ -49,39 +49,14 @@ Melpa and use-package for installing and handling packages
 #+name: org
 #+begin_src elisp
 (setq org-capture-templates
-      '(("k" "Keeper Entry" entry
-	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
-	 "** %^{Title} :keeper:%^{Tags (colon-separated)}:
-:PROPERTIES:
-:JournalNumber: %^{Journal Number}
-:JournalPage: %^{Journal Page}
-:CREATED: %U
-:END:
-- *From:* %^{Source}
-- *Idea:* %^{Idea}
-- *Why it matters:* %^{Why it matters}")
-	("i" "Inbox Entry" entry
-	 (file+headline "~/Documents/Notes/keepers.org" "Inbox")
-	 "** %^{Note}\n:CREATED: %U")
-	("s" "Source Entry" entry
-	 (file+headline "~/Documents/Notes/keepers.org" "Sources")
-	 "** %^{Source codename} :source:
-:PROPERTIES:
-:Type: %^{Type|book,article,video,other|}
-:Title: %^{Title}
-:Author: %^{Author| }
-:Year: %^{Year| }
-:Link: %^{Link| }
-:CREATED: %U
-:END:")))      
+      '(("i" "Inbox Entry" entry
+	 (file+headline "~/Documents/Notes/inbox.org" "Inbox")
+	 "** %^{Note}\n:CREATED: %U")))      
 #+end_src
-
-#+RESULTS: org
-| k | Keeper Entry | entry | (file+headline ~/Documents/Notes/keepers.org Keeper index) | %? |
 
 ** DENOTE
 #+name: denote
-#+begin_src elisp :var denote-dir="~/Documents/Notes/denote"
+#+begin_src elisp 
 (use-package denote
   :ensure t
   :hook (dired-mode . denote-dired-mode)

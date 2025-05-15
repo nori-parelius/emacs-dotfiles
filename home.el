@@ -52,6 +52,9 @@
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1)
   )
+
+(use-package denote-org
+  :ensure t)
 ;; MAGIT
 (use-package magit
   :ensure t

@@ -78,6 +78,9 @@ Melpa and use-package for installing and handling packages
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1)
   )
+
+(use-package denote-org
+  :ensure t)
 #+end_src
 
 

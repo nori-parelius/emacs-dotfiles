@@ -1,4 +1,3 @@
-(let ((denote-dir '"~/Documents/Notes/denote"))
 ;; Enables basic packaging support
 (require 'package)
 (unless package-archive-contents
@@ -29,31 +28,9 @@
 (prefer-coding-system 'utf-8)
 
 (setq org-capture-templates
-      '(("k" "Keeper Entry" entry
-	 (file+headline "~/Documents/Notes/keepers.org" "Keeper index")
-	 "** %^{Title} :keeper:%^{Tags (colon-separated)}:
-:PROPERTIES:
-:JournalNumber: %^{Journal Number}
-:JournalPage: %^{Journal Page}
-:CREATED: %U
-:END:
-- *From:* %^{Source}
-- *Idea:* %^{Idea}
-- *Why it matters:* %^{Why it matters}")
-	("i" "Inbox Entry" entry
-	 (file+headline "~/Documents/Notes/keepers.org" "Inbox")
-	 "** %^{Note}\n:CREATED: %U")
-	("s" "Source Entry" entry
-	 (file+headline "~/Documents/Notes/keepers.org" "Sources")
-	 "** %^{Source codename} :source:
-:PROPERTIES:
-:Type: %^{Type|book,article,video,other|}
-:Title: %^{Title}
-:Author: %^{Author| }
-:Year: %^{Year| }
-:Link: %^{Link| }
-:CREATED: %U
-:END:")))      
+      '(("i" "Inbox Entry" entry
+	 (file+headline "~/Documents/Notes/inbox.org" "Inbox")
+	 "** %^{Note}\n:CREATED: %U")))      
 (use-package denote
   :ensure t
   :hook (dired-mode . denote-dired-mode)
@@ -65,7 +42,8 @@
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name denote-dir))
+  (setq denote-directory (expand-file-name "~/Documents/Notes/ZK"))
+  (setq denote-known-keywords '("source" "comp"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
   ;; Automatically rename Denote buffers when opening them so that
@@ -202,8 +180,8 @@
   :hook
   (text-mode . mixed-pitch-mode)
   :config
-  (set-face-attribute 'default nil :font "Courier New" :height 130)
-  (set-face-attribute 'fixed-pitch nil :font "Courier New")
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
   (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
   )
 
@@ -227,4 +205,3 @@
 (add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)
 ;; User-Defined init.el ends here
-)

@@ -43,7 +43,8 @@
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name denote-dir))
+  (setq denote-directory (expand-file-name "~/Documents/Notes/ZK"))
+  (setq denote-known-keywords '("source" "comp"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
   ;; Automatically rename Denote buffers when opening them so that
@@ -180,8 +181,8 @@
   :hook
   (text-mode . mixed-pitch-mode)
   :config
-  (set-face-attribute 'default nil :font "Courier New" :height 130)
-  (set-face-attribute 'fixed-pitch nil :font "Courier New")
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
   (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
   )
 

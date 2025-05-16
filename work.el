@@ -36,7 +36,7 @@
 
 ;;(setq org-capture-templates
 ;;      '(("i" "Inbox Entry" entry
-;;	 (file+headline "~/Documents/Notes/inbox.org" "Inbox")
+;;	 (file+headline "~/Documents/Notes/00--digestive-tract.org" "Mouth")
 ;;	 "** %^{Note}\n:CREATED: %U")))      
 ;;(use-package denote
 ;;  :ensure t
@@ -49,8 +49,9 @@
 ;;   ("C-c n d" . denote-dired)
 ;;   ("C-c n g" . denote-grep))
 ;;  :config
-;;  (setq denote-directory (expand-file-name "~/Documents/Notes/ZK"))
-;;  (setq denote-known-keywords '("source" "comp"))
+;;  (setq denote-directory (expand-file-name "~/Documents/Notes"))
+;;  (setq denote-known-keywords '("source" "project" "archived" "comp"))
+;;  (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder"))
 ;;  ;; When creating a note from another, automatically link to it
 ;;  ;; (setq denote-link-after-creating t)
 ;;  ;; Automatically rename Denote buffers when opening them so that

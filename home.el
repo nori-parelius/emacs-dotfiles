@@ -29,7 +29,7 @@
 
 (setq org-capture-templates
       '(("i" "Inbox Entry" entry
-	 (file+headline "~/Documents/Notes/00--digestive-tract.org" "Mouth")
+	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Mouth")
 	 "** %^{Note}\n:CREATED: %U")))      
 (use-package denote
   :ensure t
@@ -43,7 +43,7 @@
    ("C-c n g" . denote-grep))
   :config
   (setq denote-directory (expand-file-name "~/Documents/Notes"))
-  (setq denote-known-keywords '("source" "project" "archived" "comp"))
+  (setq denote-known-keywords '("source" "project" "archived"))
   (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)

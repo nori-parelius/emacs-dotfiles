@@ -66,7 +66,10 @@ Melpa and use-package for installing and handling packages
    ("C-c n l" . denote-link)
    ("C-c n b" . denote-backlinks)
    ("C-c n d" . denote-dired)
-   ("C-c n g" . denote-grep))
+   ("C-c n g" . denote-grep)
+   ("C-c n o" . denote-open-or-create)
+   ("C-c n c" . denote-link-after-creating)
+   )
   :config
   (setq denote-directory (expand-file-name "~/Documents/Notes"))
   (setq denote-known-keywords '("source" "project" "archived"))
@@ -83,6 +86,8 @@ Melpa and use-package for installing and handling packages
 (use-package denote-org
   :ensure t)
 #+end_src
+
+#+RESULTS: denote
 
 
 ** MAGIT

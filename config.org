@@ -50,7 +50,7 @@ Melpa and use-package for installing and handling packages
 #+begin_src elisp
 (setq org-capture-templates
       '(("i" "Inbox Entry" entry
-	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Mouth")
+	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Inbox")
 	 "** %^{Note}\n:CREATED: %U")))      
 #+end_src
 

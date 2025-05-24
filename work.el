@@ -36,7 +36,7 @@
 
 ;;(setq org-capture-templates
 ;;      '(("i" "Inbox Entry" entry
-;;	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Mouth")
+;;	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Inbox")
 ;;	 "** %^{Note}\n:CREATED: %U")))      
 ;;(use-package denote
 ;;  :ensure t

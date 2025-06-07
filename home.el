@@ -210,14 +210,15 @@
 
 (defun nori-insert-org-list-of-page-links (dir)
   "Insert org-mode list items linking to all .jpg files in DIR.
-Assumes filenames are of the form pages_<desc>.jpg and uses <desc> as link text."
+Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as link text."
   (interactive "DSelect directory: ")
-  (let ((files (directory-files dir nil "\\.jpg$"))) ;; nil is for not FULL path
+  (let ((dir-name (file-name-nondirectory (directory-file-name dir)))
+	(files (directory-files dir nil "\\.jpg$"))) ;; nil is for not FULL path
     (dolist (file files)
       (let* ((desc (string-remove-suffix ".jpg" (string-remove-prefix "pages_" file)))
 	     (rel-path (file-relative-name (expand-file-name file dir)
 					   default-directory)))
-	(insert (format "*** [[./%s][%s]]\n" rel-path desc))))))
+	(insert (format "*** [[./%s][%s_%s]]\n" rel-path dir-name desc))))))
 
 
 ;; Enable line numbers globally

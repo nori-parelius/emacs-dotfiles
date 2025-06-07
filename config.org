@@ -455,7 +455,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <desc> as link text.
       (let* ((desc (string-remove-suffix ".jpg" (string-remove-prefix "pages_" file)))
 	     (rel-path (file-relative-name (expand-file-name file dir)
 					   default-directory)))
-	(insert (format "- [[./%s][%s]]\n" rel-path desc))))))
+	(insert (format "*** [[./%s][%s]]\n" rel-path desc))))))
 
 #+end_src
 

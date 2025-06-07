@@ -5,34 +5,38 @@
   (setenv "PATH" (concat git-bin ";" (getenv "PATH")))
   (add-to-list 'exec-path git-bin))
 
-;; Enables basic packaging support
-(require 'package)
-(unless package-archive-contents
-  (package-refresh-contents))
+  ;; Enables basic packaging support
+  (require 'package)
+  (unless package-archive-contents
+    (package-refresh-contents))
 
 
-;; MELPA
-;; Adds the Melpa archive to the list of available repositories
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+  ;; MELPA
+  ;; Adds the Melpa archive to the list of available repositories
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 
-;; Initializes the package infrastructure
-(package-initialize)
+  ;; Initializes the package infrastructure
+  (package-initialize)
 
-;; USE-PACKAGE
-;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+  ;; USE-PACKAGE
+  ;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-;; ENV
-;; Set locale and encoding for better subprocess compatibility
-(setenv "LC_TIME" "C")      ; English day/month/month names
-(setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
-(setenv "LANG" "C")
-(set-language-environment "English")
-(prefer-coding-system 'utf-8)
+  ;; ENV
+  ;; Set locale and encoding for better subprocess compatibility
+  (setenv "LC_TIME" "C")      ; English day/month/month names
+  (setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
+  (setenv "LANG" "C")
+  (set-language-environment "English")
+  (prefer-coding-system 'utf-8)
+
+  ;; NO LITTERING
+  (use-package no-littering
+    :ensure t)
 
 ;;(setq org-capture-templates
 ;;      '(("i" "Inbox Entry" entry

@@ -1,31 +1,35 @@
-;; Enables basic packaging support
-(require 'package)
-(unless package-archive-contents
-  (package-refresh-contents))
+  ;; Enables basic packaging support
+  (require 'package)
+  (unless package-archive-contents
+    (package-refresh-contents))
 
 
-;; MELPA
-;; Adds the Melpa archive to the list of available repositories
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+  ;; MELPA
+  ;; Adds the Melpa archive to the list of available repositories
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 
-;; Initializes the package infrastructure
-(package-initialize)
+  ;; Initializes the package infrastructure
+  (package-initialize)
 
-;; USE-PACKAGE
-;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+  ;; USE-PACKAGE
+  ;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-;; ENV
-;; Set locale and encoding for better subprocess compatibility
-(setenv "LC_TIME" "C")      ; English day/month/month names
-(setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
-(setenv "LANG" "C")
-(set-language-environment "English")
-(prefer-coding-system 'utf-8)
+  ;; ENV
+  ;; Set locale and encoding for better subprocess compatibility
+  (setenv "LC_TIME" "C")      ; English day/month/month names
+  (setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
+  (setenv "LANG" "C")
+  (set-language-environment "English")
+  (prefer-coding-system 'utf-8)
+
+  ;; NO LITTERING
+  (use-package no-littering
+    :ensure t)
 
 (setq org-capture-templates
       '(("i" "Inbox Entry" entry
@@ -203,7 +207,18 @@
   "Run my git autocommitpush Bash script."
   (interactive)
   (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
- 
+
+(defun nori-insert-org-list-of-page-links (dir)
+  "Insert org-mode list items linking to all .jpg files in DIR.
+Assumes filenames are of the form pages_<desc>.jpg and uses <desc> as link text."
+  (interactive "DSelect directory: ")
+  (let ((files (directory-files dir nil "\\.jpg$"))) ;; nil is for not FULL path
+    (dolist (file files)
+      (let* ((desc (string-remove-suffix ".jpg" (string-remove-prefix "pages_" file)))
+	     (rel-path (file-relative-name (expand-file-name file dir)
+					   default-directory)))
+	(insert (format "- [[./%s][%s]]\n" rel-path desc))))))
+
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

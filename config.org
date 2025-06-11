@@ -524,6 +524,36 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 ;; User-Defined init.el ends here
 #+end_src
 
+** Emacs-server config
+#+name: server
+#+begin_src elisp :tangle ~/.emacs.d/server.el :noweb strip-export
+<<melpa>>
+<<org>>
+<<denote>>
+<<magit>>
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+<<ox-hugo>>
+;;<<languagetool>>
+<<theme>>
+
+<<custom1>>
+<<mixed-pitch>>
+<<autopullpush>>
+<<insert-page-links>>
+
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+(global-display-line-numbers-mode t)
+
+;;(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
+(nori-autopull)
+;; User-Defined init.el ends here
+#+end_src
+
 ** Work config
 #+name: work
 #+header: :var denote-dir="C:/Users/elpar/OneDrive - Forsvarets forskningsinstitutt/MyDocs/Refs"
@@ -570,6 +600,8 @@ I figured the easiest was to distinguish them by the name of the computer.
    ((equal system-name "debchrome")
     (load "~/.emacs.d/chrome.el"))
    ((equal system-type 'windows-nt)
-    (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el")))
+    (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el"))
+   (t (load "~/.emacs.d/server.el"))
+   )
 #+end_src
 

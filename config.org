@@ -538,7 +538,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<embark>>
 <<ox-hugo>>
 ;;<<languagetool>>
-<<theme>>
+;;<<theme>>
 
 <<custom1>>
 <<mixed-pitch>>

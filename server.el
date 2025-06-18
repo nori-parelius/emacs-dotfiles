@@ -129,14 +129,14 @@
 ;;  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
 ;;        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
 ;;        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
-;; THEME
-(require 'ef-themes)
-
-(load-theme 'ef-autumn :no-confirm)
-
-(setq ef-themes-to-toggle '(ef-autumn ef-cyprus))
-
-(define-key global-map (kbd "<f5>") #'ef-themes-toggle)
+;;;; THEME
+;;(require 'ef-themes)
+;;
+;;(load-theme 'ef-autumn :no-confirm)
+;;
+;;(setq ef-themes-to-toggle '(ef-autumn ef-cyprus))
+;;
+;;(define-key global-map (kbd "<f5>") #'ef-themes-toggle)
 
 ;; ===================================
 ;; Basic Customization

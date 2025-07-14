@@ -50,7 +50,7 @@
    ("C-c n c" . denote-link-after-creating)
    )
   :config
-  (setq denote-directory (expand-file-name "~/Documents/Notes"))
+  (setq denote-directory (expand-file-name "~/Documents/Notes/denote"))
   (setq denote-known-keywords '("source" "project" "archived" "zk" "attach"))
   (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder"))
   ;; When creating a note from another, automatically link to it

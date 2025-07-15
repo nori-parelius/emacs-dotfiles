@@ -220,11 +220,24 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 					   default-directory)))
 	(insert (format "*** [[./%s][%s_%s]]\n" rel-path dir-name desc))))))
 
+(defun nori/org-copy-remote-url-to-terminal ()
+  "Prints the URL corresponding to the file link at point."
+  (interactive)
+  (let* ((context (org-element-context)))
+    (when (eq (org-element-type context) 'link)
+      (let* ((raw-link (org-element-property :raw-link context))
+             (org-file-dir (file-name-directory (or (buffer-file-name) default-directory)))
+             (abs-path (expand-file-name raw-link org-file-dir))
+             (rel-path (file-relative-name abs-path (expand-file-name "~/Documents/Notes/")))
+             (url (concat my/org-link-base-url rel-path)))
+        (message "URL: %s" url)))))
 
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-b") #'nori/org-copy-remote-url-to-terminal))
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)
 
-;;(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
+(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
 (nori-autopull)
 ;; User-Defined init.el ends here

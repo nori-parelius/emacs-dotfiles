@@ -220,6 +220,9 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 					   default-directory)))
 	(insert (format "*** [[./%s][%s_%s]]\n" rel-path dir-name desc))))))
 
+(defcustom nori/org-link-base-url "https://e3a70.noriparelius.com/Documents/Notes/"
+  "Base URL to replace local file paths when opening Org links externally.")
+
 (defun nori/org-copy-remote-url-to-terminal ()
   "Prints the URL corresponding to the file link at point."
   (interactive)
@@ -229,7 +232,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
              (org-file-dir (file-name-directory (or (buffer-file-name) default-directory)))
              (abs-path (expand-file-name raw-link org-file-dir))
              (rel-path (file-relative-name abs-path (expand-file-name "~/Documents/Notes/")))
-             (url (concat my/org-link-base-url rel-path)))
+             (url (concat nori/org-link-base-url rel-path)))
         (message "URL: %s" url)))))
 
 (with-eval-after-load 'org

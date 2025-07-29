@@ -1,44 +1,62 @@
-  ;; Enables basic packaging support
-  (require 'package)
-  (unless package-archive-contents
-    (package-refresh-contents))
+;; Enables basic packaging support
+(require 'package)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 
-  ;; MELPA
-  ;; Adds the Melpa archive to the list of available repositories
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+;; MELPA
+;; Adds the Melpa archive to the list of available repositories
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 
-  ;; Initializes the package infrastructure
-  (package-initialize)
+;; Initializes the package infrastructure
+(package-initialize)
 
-  ;; USE-PACKAGE
-  ;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+;; USE-PACKAGE
+;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-  ;; ENV
-  ;; Set locale and encoding for better subprocess compatibility
-  (setenv "LC_TIME" "C")      ; English day/month/month names
-  (setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
-  (setenv "LANG" "C")
-  (set-language-environment "English")
-  (prefer-coding-system 'utf-8)
+;; ENV
+;; Set locale and encoding for better subprocess compatibility
+(setenv "LC_TIME" "C")      ; English day/month/month names
+(setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
+(setenv "LANG" "C")
+(set-language-environment "English")
+(prefer-coding-system 'utf-8)
 
-  ;; NO LITTERING
-  (use-package no-littering
-    :ensure t)
+;; NO LITTERING
+(use-package no-littering
+  :ensure t)
 
-  ;; PUT ~ elsewhere
-  ;; https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files/151946#151946
-  (setq backup-directory-alist '(("." . "~/.saves")))
-  (setq backup-by-copying t ;; Copy all files, don't rename them
-        delete-old-versions t ;; Don't ask to delete excess backup versions
-	kept-new-versions 10 ;; Number of newest versions to keep
-	kept-old-versions 0 ;; Number of oldest versions to keep
-	version-control t) ;;Use verion numbers for backups
+;; PUT ~ elsewhere
+;; https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files/151946#151946
+(setq version-control t     ;; Use version numbers for backups.
+      kept-new-versions 10  ;; Number of newest versions to keep.
+      kept-old-versions 0   ;; Number of oldest versions to keep.
+      delete-old-versions t ;; Don't ask to delete excess backup versions.
+      backup-by-copying t)  ;; Copy all files, don't rename them.
+(setq vc-make-backup-files t) ;; Backup versioned files
+
+;; Default and per-save backups go here:
+(setq backup-directory-alist '(("" . "~/.emacs.d/backup/per-save")))
+(defun nori-force-backup-of-buffer ()
+  ;; Make a special "per session" backup at the first save of each
+  ;; emacs session.
+  (when (not buffer-backed-up)
+    ;; Override the default parameters for per-session backups.
+    (let ((backup-directory-alist '(("" . "~/.emacs.d/backup/per-session")))
+          (kept-new-versions 3))
+      (backup-buffer)))
+  ;; Make a "per save" backup on each save.  The first save results in
+  ;; both a per-session and a per-save backup, to keep the numbering
+  ;; of per-save backups consistent.
+  (let ((buffer-backed-up nil))
+    (backup-buffer)))
+
+(add-hook 'before-save-hook  'nori-force-backup-of-buffer)
 (setq org-capture-templates
       '(("i" "Inbox Entry" entry
 	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Inbox")

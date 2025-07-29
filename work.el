@@ -38,6 +38,14 @@
   (use-package no-littering
     :ensure t)
 
+  ;; PUT ~ elsewhere
+  ;; https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files/151946#151946
+  (setq backup-directory-alist '(("." . "~/.saves")))
+  (setq backup-by-copying t ;; Copy all files, don't rename them
+        delete-old-versions t ;; Don't ask to delete excess backup versions
+	kept-new-versions 10 ;; Number of newest versions to keep
+	kept-old-versions 0 ;; Number of oldest versions to keep
+	version-control t) ;;Use verion numbers for backups
 ;;(setq org-capture-templates
 ;;      '(("i" "Inbox Entry" entry
 ;;	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Inbox")

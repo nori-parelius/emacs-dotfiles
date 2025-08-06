@@ -500,6 +500,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
   "Prints the URL corresponding to the file link at point."
   (interactive)
   (let* ((context (org-element-context)))
+    (message "Element type at point: %s" (org-element-type context))
     (when (eq (org-element-type context) 'link)
       (let* ((raw-link (org-element-property :raw-link context))
              (org-file-dir (file-name-directory (or (buffer-file-name) default-directory)))

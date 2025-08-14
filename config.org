@@ -218,7 +218,28 @@ Ox-hugo is an interface with Hugo, a system for making static sites.
   )
 #+end_src
 
+** Customize ox-latex for memoir
+#+name: memoir
+#+begin_src elisp
+(with-eval-after-load 'ox-latex
+  ;; Novel-style memoir class
+  (add-to-list 'org-latex-classes
+               '("novel"
+                 "\\documentclass[12pt,oneside]{memoir}
+\\setlength{\\parindent}{2em}
+\\setlength{\\parskip}{0em}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[paperwidth=6in,paperheight=9in]{geometry}
+\\usepackage{lmodern}
+\\OnehalfSpacing
+\\chapterstyle{hangnum}"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
+#+end_src
 ** LANGUAGETOOL
 Interfacing with languagetool for spelling and style check.
 I only have this one on my home coputer.
@@ -525,6 +546,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<marginalia>>
 <<embark>>
 <<ox-hugo>>
+<<memoir>>
 <<languagetool>>
 <<theme>>
 

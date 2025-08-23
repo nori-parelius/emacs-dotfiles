@@ -1,5 +1,5 @@
   (cond
-   ((equal system-name "NoriPCdebian")
+   ((equal system-name "NoriPC")
     (load "~/.emacs.d/home.el"))
    ((equal system-name "debchrome")
     (load "~/.emacs.d/chrome.el"))

@@ -666,7 +666,7 @@ I figured the easiest was to distinguish them by the name of the computer.
 
 #+begin_src elisp :tangle ~/.emacs.d/init.el :noweb strip-export :results output
   (cond
-   ((equal system-name "NoriPCdebian")
+   ((equal system-name "NoriPC")
     (load "~/.emacs.d/home.el"))
    ((equal system-name "debchrome")
     (load "~/.emacs.d/chrome.el"))

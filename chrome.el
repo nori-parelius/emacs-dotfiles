@@ -77,7 +77,7 @@
    )
   :config
   (setq denote-directory (expand-file-name "~/Documents/Notes"))
-  (setq denote-known-keywords '("source" "attach" "output" "comp" "ai" "doingthings" "health" "addiction" "creativity" "learning" "blog" "notetaking" "selfdiscovery" "writing" "intuition" "movement" "sharing" "music" "meaning" "techandpeople" "home"))
+  (setq denote-known-keywords '("source" "attach" "output" "comp" "ai" "doingthings" "health" "addiction" "creativity" "learning" "blog" "notetaking" "selfdiscovery" "writing" "intuition" "movement" "sharing" "music" "meaning" "techandpeople" "home" "happiness"))
   (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)

@@ -348,8 +348,20 @@ Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-
   (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
   (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
   )
+#+end_src
 
-
+#+name: mixed-pitch-2
+#+begin_src elisp
+;; MIXED-PITCH
+(use-package mixed-pitch
+  :ensure t
+  :hook
+  (text-mode . mixed-pitch-mode)
+  :config
+  (set-face-attribute 'default nil :font "Space Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "Space Mono")
+  (set-face-attribute 'variable-pitch nil :font "Lora")
+  )
 #+end_src
 
 ** Extra functions
@@ -551,7 +563,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<theme>>
 
 <<custom1>>
-<<mixed-pitch>>
+<<mixed-pitch-2>>
 <<autopullpush>>
 <<insert-page-links>>
 

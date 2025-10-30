@@ -230,8 +230,6 @@
   )
 
 
-
-
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)

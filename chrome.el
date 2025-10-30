@@ -223,8 +223,6 @@
   (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
   )
 
-
-
 (defun nori-autopull ()
   "Run my git autopull Bash script."
   (interactive)

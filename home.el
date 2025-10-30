@@ -235,12 +235,10 @@
   :hook
   (text-mode . mixed-pitch-mode)
   :config
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
-  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
-  (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
+  (set-face-attribute 'default nil :font "Space Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "Space Mono")
+  (set-face-attribute 'variable-pitch nil :font "Lora")
   )
-
-
 
 (defun nori-autopull ()
   "Run my git autopull Bash script."

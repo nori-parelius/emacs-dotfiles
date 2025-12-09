@@ -158,6 +158,7 @@
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
+
 (use-package languagetool
   :ensure t
   :defer t

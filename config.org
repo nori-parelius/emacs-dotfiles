@@ -240,13 +240,6 @@ Ox-hugo is an interface with Hugo, a system for making static sites.
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 #+end_src
-
-** OX-PANDOC
-#+name: ox-pandoc
-#+begin_src elisp
-(use-package ox-pandoc
-  :ensure t)
-#+end_src elisp
 ** LANGUAGETOOL
 Interfacing with languagetool for spelling and style check.
 I only have this one on my home coputer.
@@ -566,7 +559,6 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<embark>>
 <<ox-hugo>>
 <<memoir>>
-<<ox-pandoc>>
 <<languagetool>>
 <<theme>>
 

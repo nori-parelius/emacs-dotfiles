@@ -76,7 +76,7 @@
    )
   :config
   (setq denote-directory (expand-file-name "~/Documents/Notes"))
-  (setq denote-known-keywords '("source" "attach" "output" "comp" "ai" "doingthings" "health" "addiction" "creativity" "learning" "blog" "notetaking" "selfdiscovery" "writing" "intuition" "movement" "sharing" "music" "meaning" "techandpeople" "home" "happiness"))
+  (setq denote-known-keywords '("source" "attach" "output" "thread"))
   (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
@@ -84,7 +84,7 @@
   ;; instead of their long file name they have, for example, a literal
   ;; "[D]" followed by the file's title.  Read the doc string of
   ;; `denote-rename-buffer-format' for how to modify this.
-  ;;(denote-rename-buffer-mode 1)
+  (denote-rename-buffer-mode 1)
   )
 
 (use-package denote-org

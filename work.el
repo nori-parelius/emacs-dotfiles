@@ -34,6 +34,9 @@
 (set-language-environment "English")
 (prefer-coding-system 'utf-8)
 
+(use-package htmlize
+  :ensure t)
+
 ;; NO LITTERING
 (use-package no-littering
   :ensure t)
@@ -84,7 +87,7 @@
 ;;  :config
 ;;  (setq denote-directory (expand-file-name "~/Documents/Notes"))
 ;;  (setq denote-known-keywords '("source" "attach" "output" "thread"))
-;;  (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo"))
+;;  (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo" "website"))
 ;;  ;; When creating a note from another, automatically link to it
 ;;  ;; (setq denote-link-after-creating t)
 ;;  ;; Automatically rename Denote buffers when opening them so that

@@ -27,6 +27,9 @@
 (set-language-environment "English")
 (prefer-coding-system 'utf-8)
 
+(use-package htmlize
+  :ensure t)
+
 ;; NO LITTERING
 (use-package no-littering
   :ensure t)
@@ -77,7 +80,7 @@
   :config
   (setq denote-directory (expand-file-name "~/Documents/Notes"))
   (setq denote-known-keywords '("source" "attach" "output" "thread"))
-  (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo"))
+  (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo" "website"))
   ;; When creating a note from another, automatically link to it
   ;; (setq denote-link-after-creating t)
   ;; Automatically rename Denote buffers when opening them so that
@@ -144,12 +147,11 @@
   ;; Novel-style memoir class
   (add-to-list 'org-latex-classes
                '("novel"
-                 "\\documentclass[12pt,oneside]{memoir}
+                 "\\documentclass[12pt,twoside]{memoir}
 \\setlength{\\parindent}{2em}
 \\setlength{\\parskip}{0em}
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage[paperwidth=6in,paperheight=9in]{geometry}
 \\usepackage{lmodern}
 \\OnehalfSpacing
 \\chapterstyle{hangnum}"

@@ -136,13 +136,6 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;; OX-HUGO
-(use-package ox-hugo
-  :after (org)
-  :ensure t
-  :pin melpa
-  :after ox
-  )
 (with-eval-after-load 'ox-latex
   ;; Novel-style memoir class
   (add-to-list 'org-latex-classes

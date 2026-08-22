@@ -1,9 +1,6 @@
   (cond
    ((equal system-name "NoriPC")
     (load "~/.emacs.d/home.el"))
-   ((equal system-name "debchrome")
-    (load "~/.emacs.d/chrome.el"))
-   ((equal system-type 'windows-nt)
-    (load "C:/Users/ELPAR/AppData/Roaming/.emacs.d/work.el"))
+   ;; emacs server inside the container has weird names
    (t (load "~/.emacs.d/server.el"))
    )

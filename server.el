@@ -136,28 +136,38 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;; OX-HUGO
-(use-package ox-hugo
-  :after (org)
+;;(with-eval-after-load 'ox-latex
+;;  ;; Novel-style memoir class
+;;  (add-to-list 'org-latex-classes
+;;               '("novel"
+;;                 "\\documentclass[12pt,twoside]{memoir}
+;;\\setlength{\\parindent}{2em}
+;;\\setlength{\\parskip}{0em}
+;;\\usepackage[utf8]{inputenc}
+;;\\usepackage[T1]{fontenc}
+;;\\usepackage{lmodern}
+;;\\OnehalfSpacing
+;;\\chapterstyle{hangnum}"
+;;                 ("\\chapter{%s}" . "\\chapter*{%s}")
+;;                 ("\\section{%s}" . "\\section*{%s}")
+;;                 ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+;;
+(use-package languagetool
   :ensure t
-  :pin melpa
-  :after ox
-  )
-;;(use-package languagetool
-;;  :ensure t
-;;  :defer t
-;;  :commands (languagetool-check
-;;             languagetool-clear-suggestions
-;;             languagetool-correct-at-point
-;;             languagetool-correct-buffer
-;;             languagetool-set-language
-;;             languagetool-server-mode
-;;             languagetool-server-start
-;;             languagetool-server-stop)
-;;  :config
-;;  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-;;        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
-;;        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
+  :defer t
+  :commands (languagetool-check
+             languagetool-clear-suggestions
+             languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode
+             languagetool-server-start
+             languagetool-server-stop)
+  :config
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
+        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
 ;;;; THEME
 ;;(require 'ef-themes)
 ;;
@@ -265,6 +275,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-b") #'nori/org-copy-remote-url-to-terminal))
+
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
 (global-display-line-numbers-mode t)

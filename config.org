@@ -532,7 +532,8 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-b") #'nori/org-copy-remote-url-to-terminal))
-#+end_src 
+#+end_src
+
 ** Home config
 #+name: home
 #+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
@@ -553,6 +554,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<mixed-pitch-2>>
 <<autopullpush>>
 <<insert-page-links>>
+(load "/home/nori/Documents/noriparelius/render-site.el")
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
@@ -584,6 +586,8 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<autopullpush>>
 <<insert-page-links>>
 <<copy-url-to-terminal>>
+
+(load "/home/nori/Documents/noriparelius/render-site.el")
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

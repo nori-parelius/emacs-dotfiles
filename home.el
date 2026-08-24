@@ -173,7 +173,7 @@
 
 (load-theme 'ef-autumn :no-confirm)
 
-(setq ef-themes-to-toggle '(ef-autumn ef-cyprus))
+(setq ef-themes-to-toggle '(ef-cyprus ef-autumn))
 
 (define-key global-map (kbd "<f5>") #'ef-themes-toggle)
 

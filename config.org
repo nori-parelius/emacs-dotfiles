@@ -257,7 +257,7 @@ Changing to ef-themes from Protesilaos from modus themes.
 ;; THEME
 (require 'ef-themes)
 
-(load-theme 'ef-autumn :no-confirm)
+(load-theme 'ef-cyprus :no-confirm)
 
 (setq ef-themes-to-toggle '(ef-cyprus ef-autumn))
 
@@ -537,6 +537,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 ** Home config
 #+name: home
 #+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
+;; -*- lexical-binding: t; -*-
 <<melpa>>
 <<org>>
 <<denote>>
@@ -568,6 +569,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 ** Emacs-server config
 #+name: server
 #+begin_src elisp :tangle ~/.emacs.d/server.el :noweb strip-export
+;; -*- lexical-binding: t; -*-
 <<melpa>>
 <<org>>
 <<denote>>
@@ -603,6 +605,7 @@ The only thing happening here is chosing which config to load, depending on whic
 I figured the easiest was to distinguish them by the name of the computer.
 
 #+begin_src elisp :tangle ~/.emacs.d/init.el :noweb strip-export :results output
+;; -*- lexical-binding: t; -*-
   (cond
    ((equal system-name "NoriPC")
     (load "~/.emacs.d/home.el"))

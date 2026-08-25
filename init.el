@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
   (cond
    ((equal system-name "NoriPC")
     (load "~/.emacs.d/home.el"))

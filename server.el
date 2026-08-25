@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; Enables basic packaging support
 (require 'package)
 (unless package-archive-contents
@@ -171,7 +172,7 @@
 ;;;; THEME
 ;;(require 'ef-themes)
 ;;
-;;(load-theme 'ef-autumn :no-confirm)
+;;(load-theme 'ef-cyprus :no-confirm)
 ;;
 ;;(setq ef-themes-to-toggle '(ef-cyprus ef-autumn))
 ;;

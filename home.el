@@ -258,7 +258,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 					   default-directory)))
 	(insert (format "*** [[./%s][%s_%s]]\n" rel-path dir-name desc))))))
 
-(load "/home/nori/Documents/noriparelius/render-site.el")
+(load "/home/nori/Documents/noriparelius/nori-site.el")
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

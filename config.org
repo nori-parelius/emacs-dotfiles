@@ -555,7 +555,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<mixed-pitch-2>>
 <<autopullpush>>
 <<insert-page-links>>
-(load "/home/nori/Documents/noriparelius/render-site.el")
+(load "/home/nori/Documents/noriparelius/nori-site.el")
 
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
@@ -589,7 +589,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 <<insert-page-links>>
 <<copy-url-to-terminal>>
 
-(load "/home/nori/Documents/noriparelius/render-site.el")
+(load "/home/nori/Documents/noriparelius/nori-site.el")
 (load-theme 'leuven :no-confirm)
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

@@ -277,7 +277,7 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-b") #'nori/org-copy-remote-url-to-terminal))
 
-(load "/home/nori/Documents/noriparelius/render-site.el")
+(load "/home/nori/Documents/noriparelius/nori-site.el")
 (load-theme 'leuven :no-confirm)
 ;; Enable line numbers globally
 ;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29

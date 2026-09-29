@@ -167,8 +167,8 @@
              languagetool-server-stop)
   :config
   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-        languagetool-console-command "~/.languagetool/languagetool-commandline.jar"
-        languagetool-server-command "~/.languagetool/languagetool-server.jar"))
+        languagetool-console-command "/home/nori/.languagetool/languagetool-commandline.jar"
+        languagetool-server-command "/home/nori/.languagetool/languagetool-server.jar"))
 ;;;; THEME
 ;;(require 'ef-themes)
 ;;

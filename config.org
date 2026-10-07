@@ -87,11 +87,6 @@ Melpa and use-package for installing and handling packages
 	 "** %^{Note}\n:CREATED: %U")))      
 #+end_src
 
-** PANDOC EXPORTER
-#+name: pandoc
-#+begin_src elisp
-(require 'ox-pandoc)
-#+end_src
 ** DENOTE
 #+name: denote
 #+begin_src elisp 
@@ -545,7 +540,6 @@ Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as 
 ;; -*- lexical-binding: t; -*-
 <<melpa>>
 <<org>>
-<<pandoc>>
 <<denote>>
 <<magit>>
 <<org-babel>>

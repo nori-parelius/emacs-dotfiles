@@ -65,7 +65,6 @@
       '(("i" "Inbox Entry" entry
 	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Inbox")
 	 "** %^{Note}\n:CREATED: %U")))      
-(require 'ox-pandoc)
 (use-package denote
   :ensure t
   :hook (dired-mode . denote-dired-mode)

@@ -144,10 +144,10 @@
 ;;                 "\\documentclass[12pt,twoside]{memoir}
 ;;\\setlength{\\parindent}{2em}
 ;;\\setlength{\\parskip}{0em}
+;;\\usepackage[utf8]{inputenc}
+;;\\usepackage[T1]{fontenc}
 ;;\\usepackage{lmodern}
 ;;\\OnehalfSpacing
-;;\\settrimmedsize{203mm}{127mm}{*}
-;;\\settri
 ;;\\chapterstyle{hangnum}"
 ;;                 ("\\chapter{%s}" . "\\chapter*{%s}")
 ;;                 ("\\section{%s}" . "\\section*{%s}")

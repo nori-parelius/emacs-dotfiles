@@ -137,23 +137,23 @@
   :bind
   (("C-." . embark-act))         ;; pick some comfortable binding
   )
-;;(with-eval-after-load 'ox-latex
-;;  ;; Novel-style memoir class
-;;  (add-to-list 'org-latex-classes
-;;               '("novel"
-;;                 "\\documentclass[12pt,twoside]{memoir}
-;;\\setlength{\\parindent}{2em}
-;;\\setlength{\\parskip}{0em}
-;;\\usepackage{lmodern}
-;;\\OnehalfSpacing
-;;\\settrimmedsize{203mm}{127mm}{*}
-;;\\settri
-;;\\chapterstyle{hangnum}"
-;;                 ("\\chapter{%s}" . "\\chapter*{%s}")
-;;                 ("\\section{%s}" . "\\section*{%s}")
-;;                 ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
-;;
+(with-eval-after-load 'ox-latex
+  ;; Novel-style memoir class
+  (add-to-list 'org-latex-classes
+               '("novel"
+                 "\\documentclass[12pt,twoside]{memoir}
+\\setlength{\\parindent}{2em}
+\\setlength{\\parskip}{0em}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\OnehalfSpacing
+\\chapterstyle{hangnum}"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+
 (use-package languagetool
   :ensure t
   :defer t

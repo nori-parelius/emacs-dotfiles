@@ -145,6 +145,13 @@
 ;;                 ("\\chapter{%s}" . "\\chapter*{%s}")
 ;;                 ("\\section{%s}" . "\\section*{%s}")
 ;;                 ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+;; (add-to-list 'org-latex-classes
+;;               '("scrbook"
+;;                 ""
+;;                 ("\\chapter{%s}" . "\\chapter*{%s}")
+;;                 ("\\section{%s}" . "\\section*{%s}")
+;;                 ("\\subsection{%s}" . "\\subsection*{%s}")
 ;;                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 ;;
 (use-package languagetool

@@ -1,0 +1,616 @@
+* My personal Emacs config
+
+This is my configuration for Emacs. 
+There are some differences between the configs for the different machines, so I have several versions being tangled from this config.
+
+I would say this is fairly close to a vanilla Emacs. Once I get something working fairly well, I'm usually happy with it, and don't feel the need to tinker anymore. Most of packages I only use with the most basic setup, because that's fine for me.
+Some inspiration comes from David Wilson's wonderful /Emacs from scratch/ https://github.com/daviwil/emacs-from-scratch, developed live on his [[https://consent.youtube.com/m?continue=https%3A%2F%2Fwww.youtube.com%2Fc%2FSystemCrafters%3Fcbrd%3D1&gl=NO&m=0&pc=yt&cm=2&hl=en&src=1][YouTube]].
+
+I decided to make a literate config file mostly because of the different versions I need for my different machines, and this makes it easier to keep track of them. 
+
+** MELPA and USE-PACKAGE and ENV variables
+Melpa and use-package for installing and handling packages
+
+#+name: melpa 
+#+begin_src elisp
+;; Enables basic packaging support
+(require 'package)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+
+;; MELPA
+;; Adds the Melpa archive to the list of available repositories
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
+
+;; Initializes the package infrastructure
+(package-initialize)
+
+;; USE-PACKAGE
+;; If we don't have the use-package package, we need to refresh contents and install it. The rest will be installed with it
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; ENV
+;; Set locale and encoding for better subprocess compatibility
+(setenv "LC_TIME" "C")      ; English day/month/month names
+(setenv "LC_MESSAGES" "C")  ; English messages from Git/Grep
+(setenv "LANG" "C")
+(set-language-environment "English")
+(prefer-coding-system 'utf-8)
+
+(use-package htmlize
+  :ensure t)
+
+;; NO LITTERING
+(use-package no-littering
+  :ensure t)
+
+;; PUT ~ elsewhere
+;; https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files/151946#151946
+(setq version-control t     ;; Use version numbers for backups.
+      kept-new-versions 10  ;; Number of newest versions to keep.
+      kept-old-versions 0   ;; Number of oldest versions to keep.
+      delete-old-versions t ;; Don't ask to delete excess backup versions.
+      backup-by-copying t)  ;; Copy all files, don't rename them.
+(setq vc-make-backup-files t) ;; Backup versioned files
+
+;; Default and per-save backups go here:
+(setq backup-directory-alist '(("" . "~/.emacs.d/backup/per-save")))
+;;(defun nori-force-backup-of-buffer ()
+;;  ;; Make a special "per session" backup at the first save of each
+;;  ;; emacs session.
+;;  (when (not buffer-backed-up)
+;;    ;; Override the default parameters for per-session backups.
+;;    (let ((backup-directory-alist '(("" . "~/.emacs.d/backup/per-session")))
+;;          (kept-new-versions 3))
+;;      (backup-buffer)))
+;;  ;; Make a "per save" backup on each save.  The first save results in
+;;  ;; both a per-session and a per-save backup, to keep the numbering
+;;  ;; of per-save backups consistent.
+;;  (let ((buffer-backed-up nil))
+;;    (backup-buffer)))
+;;
+;;(add-hook 'before-save-hook  'nori-force-backup-of-buffer)
+#+end_src
+
+** ORG
+
+#+name: org
+#+begin_src elisp
+(setq org-capture-templates
+      '(("i" "Inbox Entry" entry
+	 (file+headline "~/Documents/Notes/0000--entry-point.org" "Inbox")
+	 "** %^{Note}\n:CREATED: %U")))      
+#+end_src
+
+** DENOTE
+#+name: denote
+#+begin_src elisp 
+(use-package denote
+  :ensure t
+  :hook (dired-mode . denote-dired-mode)
+  :bind
+  (("C-c n n" . denote)
+   ("C-c n r" . denote-rename-file)
+   ("C-c n l" . denote-link)
+   ("C-c n b" . denote-backlinks)
+   ("C-c n d" . denote-dired)
+   ("C-c n g" . denote-grep)
+   ("C-c n o" . denote-open-or-create)
+   ("C-c n c" . denote-link-after-creating)
+   )
+  :config
+  (setq denote-directory (expand-file-name "~/Documents/Notes"))
+  (setq denote-known-keywords '("source" "attach" "output" "thread"))
+  (setq denote-excluded-directories-regexp '("OldZK" ".git" ".stfolder" ".obsidian" "BuJo" "website"))
+  ;; When creating a note from another, automatically link to it
+  ;; (setq denote-link-after-creating t)
+  ;; Automatically rename Denote buffers when opening them so that
+  ;; instead of their long file name they have, for example, a literal
+  ;; "[D]" followed by the file's title.  Read the doc string of
+  ;; `denote-rename-buffer-format' for how to modify this.
+  (denote-rename-buffer-mode 1)
+  )
+
+(use-package denote-org
+  :ensure t)
+#+end_src
+
+#+RESULTS: denote
+
+** MAGIT
+For GIT straight from Emacs.
+
+#+name: magit
+#+begin_src elisp
+;; MAGIT
+(use-package magit
+  :ensure t
+)
+#+end_src
+
+** ORG-BABEL
+Mostly for shell, elisp and python.
+
+#+name: org-babel
+#+begin_src elisp
+;; ORG-BABEL
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   (shell . t)
+   (emacs-lisp . t)))
+
+;; to syntax highlight code in babel and to remove the "Do you want to execute?" question
+(setq org-confirm-babel-evaluate nil
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-src-preserve-indentation t
+      )
+(setq python-indent-guess-indent-offset nil)
+(setq python-indent-offset 4)
+#+end_src
+
+** VERTICO (with ORDERLESS), MARGINALIA and EMBARK
+*** VERTICO
+Vertico is a completion framework. And also allows to write space in minibuffer, which doesn't work in out-of-the-box Emacs.
+#+name: vertico
+#+begin_src elisp
+;; VERTICO
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode)
+  :config
+(setq enable-recursive-minibuffers t))
+#+end_src
+
+*** ORDERLESS
+Allows for completion in any order.
+#+name: orderless
+#+begin_src elisp
+;; ORDERLESS
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+*** MARGINALIA
+Adds useful information to the minibuffer for each of the options.
+#+name: marginalia
+#+begin_src elisp
+;; MARGINALIA
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+#+end_src
+
+*** EMBARK
+Embark allows for a context menu, kind of like a right-click.
+#+name: embark
+#+begin_src elisp
+;; EMBARK
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act))         ;; pick some comfortable binding
+  )
+#+end_src
+
+** Customize ox-latex for memoir
+#+name: memoir
+#+begin_src elisp
+(with-eval-after-load 'ox-latex
+  ;; Novel-style memoir class
+  (add-to-list 'org-latex-classes
+               '("novel"
+                 "\\documentclass[12pt,twoside]{memoir}
+\\setlength{\\parindent}{2em}
+\\setlength{\\parskip}{0em}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\OnehalfSpacing
+\\chapterstyle{hangnum}"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+
+#+end_src
+\\usepackage[paperwidth=6in,paperheight=9in,margin=1in]{geometry}
+** LANGUAGETOOL
+Interfacing with languagetool for spelling and style check.
+I only have this one on my home coputer.
+https://github.com/PillFall/languagetool.el
+#+name: languagetool
+#+begin_src elisp
+(use-package languagetool
+  :ensure t
+  :defer t
+  :commands (languagetool-check
+             languagetool-clear-suggestions
+             languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode
+             languagetool-server-start
+             languagetool-server-stop)
+  :config
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+        languagetool-console-command "/home/nori/.languagetool/languagetool-commandline.jar"
+        languagetool-server-command "/home/nori/.languagetool/languagetool-server.jar"))
+#+end_src
+
+** THEME
+Changing to ef-themes from Protesilaos from modus themes.
+#+name: theme
+#+begin_src elisp
+;; THEME
+(require 'ef-themes)
+
+(load-theme 'ef-cyprus :no-confirm)
+
+(setq ef-themes-to-toggle '(ef-cyprus ef-autumn))
+
+(define-key global-map (kbd "<f5>") #'ef-themes-toggle)
+#+end_src
+
+#+RESULTS: theme
+
+** Customizing
+
+*** A few things I always want
+Various settings that I always want.
+
+#+name: custom1
+#+begin_src elisp
+;; ===================================
+;; Basic Customization
+;; ===================================
+
+;; Allow for manual resizing of images in org.
+;; Set org-image width to nil, so it can be set manually
+(setq org-image-actual-width nil)
+
+;; Enable word wrap
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
+;; Set visible bell instead of sound
+(setq visible-bell 1)
+
+;; Auto save buffer if idled for 2 seconds.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
+(setq auto-save-timeout 2)
+(auto-save-visited-mode +1)
+
+;; Watch and reload the file changed on the disk.
+(global-auto-revert-mode +1)
+(setq auto-revert-remote-files t)
+
+;; Delete the selected text first before editing.
+;; https://whhone.com/emacs-config/#taking-note-with-org-roam.
+(delete-selection-mode +1)
+
+;; Disable splash screen
+(setq inhibit-startup-message t)
+
+;; Smooth Scrolling
+;; https://www.emacswiki.org/emacs/SmoothScrolling.
+(setq scroll-conservatively 10000
+      scroll-step 1)
+
+(use-package markdown-mode
+  :ensure t
+  )
+
+(use-package darkroom
+  :ensure t
+  )
+
+;; Line numbers in terminal
+(when (display-graphic-p)
+  (global-display-line-numbers-mode))
+
+#+end_src
+
+*** MIXED-PITCH
+Using mixed-pitch mode (from [[https://lucidmanager.org/productivity/ricing-org-mode/][Ricing org-mode]]), so I can have code and normal text in one file and the text looks nicer. But I am not using my own fonts here, just the modus-themes defaults.
+#+name: mixed-pitch
+#+begin_src elisp
+;; MIXED-PITCH
+(use-package mixed-pitch
+  :ensure t
+  :hook
+  (text-mode . mixed-pitch-mode)
+  :config
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
+  (set-face-attribute 'variable-pitch nil :font "Liberation Sans")
+  )
+#+end_src
+
+#+name: mixed-pitch-2
+#+begin_src elisp
+;; MIXED-PITCH
+(use-package mixed-pitch
+  :ensure t
+  :hook
+  (text-mode . mixed-pitch-mode)
+  :config
+  (set-face-attribute 'default nil :font "Space Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "Space Mono")
+  (set-face-attribute 'variable-pitch nil :font "Lora")
+  )
+#+end_src
+
+** Extra functions
+*** AUTO PUSH and PULL for magit repos
+
+#+begin_src bash :tangle ~/.emacs.d/autopull.sh
+#!/bin/bash
+
+# Function to pull changes for a given repository
+function pull_changes {
+    local repo_path=$1
+
+    if [[ -z "$repo_path" ]]; then
+        echo "Repository path is required."
+        return 1
+    fi
+
+    if [[ ! -d "$repo_path" ]]; then
+        echo "Directory $repo_path does not exist."
+        return 1
+    fi
+
+    # Navigate to the Git repository
+    cd "$repo_path" || return 1
+
+    # Get the current branch
+    currentBranch=$(git symbolic-ref --short HEAD)
+
+    if [[ -z "$currentBranch" ]]; then
+        echo "Failed to determine the current branch in $repo_path."
+        return 1
+    fi
+
+    echo "Current branch in $repo_path: $currentBranch"
+
+    # Pull changes from the remote repository
+    echo "Pulling changes for branch $currentBranch..."
+    git pull origin "$currentBranch"
+
+}
+
+# List of repositories
+repos=(
+    "/home/nori/Documents/noriparelius"
+    "/home/nori/.emacs.d"
+)
+
+# Iterate over the list and call the function for each repository
+for repo in "${repos[@]}"; do
+    pull_changes "$repo"
+done
+read -p "Press enter to continue"
+#+end_src
+
+#+begin_src bash :tangle ~/.emacs.d/autocommitpush.sh
+#!/bin/bash
+
+# Function to commit and push changes for a given repository
+function commit_and_push {
+    local repo_path=$1
+
+    if [[ -z "$repo_path" ]]; then
+        echo "Repository path is required."
+        return 1
+    fi
+
+    if [[ ! -d "$repo_path" ]]; then
+        echo "Directory $repo_path does not exist."
+        return 1
+    fi
+
+    # Navigate to the Git repository
+    cd "$repo_path" || return 1
+
+    # Get the current branch
+    currentBranch=$(git symbolic-ref --short HEAD)
+
+    if [[ -z "$currentBranch" ]]; then
+        echo "Failed to determine the current branch in $repo_path."
+        return 1
+    fi
+    
+    echo "Current branch in $repo_path: $currentBranch"
+
+    # Check for changes
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "Changes detected in $repo_path, staging changes..."
+        git add -A
+
+        # Get current date and time
+        currentDate=$(date +'%Y-%m-%d')
+        currentTime=$(date +'%H-%M')
+
+        # Commit changes with a message
+        echo "Committing changes..."
+        git commit -m "Automated commit on $currentDate at $currentTime"
+
+    else
+        echo "No changes to commit in $repo_path."
+    fi
+    # Push changes to the remote repository
+    echo "Pushing changes to $currentBranch..."
+    git push origin "$currentBranch"
+
+}
+
+# List of repositories
+repos=(
+    "/home/nori/Documents/noriparelius"
+
+)
+
+# Iterate over the list and call the function for each repository
+for repo in "${repos[@]}"; do
+    commit_and_push "$repo"
+done
+
+read -p "Press enter to continue"
+
+#+end_src
+
+#+name: autopullpush
+#+begin_src elisp
+
+(defun nori-autopull ()
+  "Run my git autopull Bash script."
+  (interactive)
+  (shell-command "bash /home/nori/.emacs.d/autopull.sh"))
+
+(defun nori-autopush ()
+  "Run my git autocommitpush Bash script."
+  (interactive)
+  (shell-command "bash /home/nori/.emacs.d/autocommitpush.sh"))
+
+#+end_src
+
+#+RESULTS: autopullpush
+| org-persist-gc | org-persist-write-all | org-persist-clear-storage-maybe | org-id-locations-save | nori-autopush | org-babel-remove-temporary-stable-directory | org-babel-remove-temporary-directory | transient-maybe-save-history |
+
+
+*** INSERT-ORG-LIST-OF-PAGE-LINKS
+#+name: insert-page-links
+#+begin_src elisp
+(defun nori-insert-org-list-of-page-links (dir)
+  "Insert org-mode list items linking to all .jpg files in DIR.
+Assumes filenames are of the form pages_<desc>.jpg and uses <dirname>_<desc> as link text."
+  (interactive "DSelect directory: ")
+  (let ((dir-name (file-name-nondirectory (directory-file-name dir)))
+	(files (directory-files dir nil "\\.jpg$"))) ;; nil is for not FULL path
+    (dolist (file files)
+      (let* ((desc (string-remove-suffix ".jpg" (string-remove-prefix "pages_" file)))
+	     (rel-path (file-relative-name (expand-file-name file dir)
+					   default-directory)))
+	(insert (format "*** [[./%s][%s_%s]]\n" rel-path dir-name desc))))))
+
+#+end_src
+
+#+RESULTS: insert-page-links
+: nori-insert-org-list-of-page-links
+
+
+*** COPY REMOTE URL TO TERMINAL
+#+name: copy-url-to-terminal
+#+begin_src elisp
+(defcustom nori/org-link-base-url "https://e3a70.noriparelius.com/Documents/Notes/"
+  "Base URL to replace local file paths when opening Org links externally.")
+
+(defun nori/org-copy-remote-url-to-terminal ()
+  "Prints the URL corresponding to the file link at point."
+  (interactive)
+  (let* ((context (org-element-context)))
+    (message "Element type at point: %s" (org-element-type context))
+    (when (eq (org-element-type context) 'link)
+      (let* ((raw-link (org-element-property :raw-link context))
+             (org-file-dir (file-name-directory (or (buffer-file-name) default-directory)))
+             (abs-path (expand-file-name raw-link org-file-dir))
+             (rel-path (file-relative-name abs-path (expand-file-name "~/Documents/Notes/")))
+             (url (concat nori/org-link-base-url rel-path)))
+        (message "URL: %s" url)))))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-b") #'nori/org-copy-remote-url-to-terminal))
+#+end_src
+
+** Home config
+#+name: home
+#+begin_src elisp :tangle ~/.emacs.d/home.el :noweb strip-export
+;; -*- lexical-binding: t; -*-
+<<melpa>>
+<<org>>
+<<denote>>
+<<magit>>
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+<<memoir>>
+<<languagetool>>
+<<theme>>
+
+<<custom1>>
+<<mixed-pitch-2>>
+<<autopullpush>>
+<<insert-page-links>>
+(load "/home/nori/Documents/noriparelius/nori-site.el")
+
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+(global-display-line-numbers-mode t)
+
+(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
+(nori-autopull)
+;; User-Defined init.el ends here
+#+end_src
+
+** Emacs-server config
+#+name: server
+#+begin_src elisp :tangle ~/.emacs.d/server.el :noweb strip-export
+;; -*- lexical-binding: t; -*-
+<<melpa>>
+<<org>>
+<<denote>>
+<<magit>>
+<<org-babel>>
+<<vertico>>
+<<orderless>>
+<<marginalia>>
+<<embark>>
+;;<<memoir>>
+<<languagetool>>
+;;<<theme>>
+
+<<custom1>>
+<<mixed-pitch>>
+<<autopullpush>>
+<<insert-page-links>>
+<<copy-url-to-terminal>>
+
+(load "/home/nori/Documents/noriparelius/nori-site.el")
+(load-theme 'leuven :no-confirm)
+;; Enable line numbers globally
+;;(global-linum-mode t) deprecated since Emacs 29 https://emacs.stackexchange.com/questions/78369/what-to-use-instead-of-linum-mode-in-emacs-29
+(global-display-line-numbers-mode t)
+
+(add-hook 'kill-emacs-hook #'nori-autopush) ;; to run it on exit
+(nori-autopull)
+;; User-Defined init.el ends here
+#+end_src
+
+** Init.el file
+The only thing happening here is chosing which config to load, depending on which machine I am on.
+I figured the easiest was to distinguish them by the name of the computer.
+
+#+begin_src elisp :tangle ~/.emacs.d/init.el :noweb strip-export :results output
+;; -*- lexical-binding: t; -*-
+  (cond
+   ((equal system-name "NoriPC")
+    (load "~/.emacs.d/home.el"))
+   ;; emacs server inside the container has weird names
+   (t (load "~/.emacs.d/server.el"))
+   )
+#+end_src
+

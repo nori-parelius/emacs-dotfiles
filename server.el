@@ -141,14 +141,7 @@
 ;;  ;; Novel-style memoir class
 ;;  (add-to-list 'org-latex-classes
 ;;               '("novel"
-;;                 "\\documentclass[12pt,twoside]{memoir}
-;;\\setlength{\\parindent}{2em}
-;;\\setlength{\\parskip}{0em}
-;;\\usepackage[utf8]{inputenc}
-;;\\usepackage[T1]{fontenc}
-;;\\usepackage{lmodern}
-;;\\OnehalfSpacing
-;;\\chapterstyle{hangnum}"
+;;                 "\\documentclass[12pt,twoside]{memoir}"
 ;;                 ("\\chapter{%s}" . "\\chapter*{%s}")
 ;;                 ("\\section{%s}" . "\\section*{%s}")
 ;;                 ("\\subsection{%s}" . "\\subsection*{%s}")

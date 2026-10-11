@@ -212,21 +212,13 @@ Embark allows for a context menu, kind of like a right-click.
   ;; Novel-style memoir class
   (add-to-list 'org-latex-classes
                '("novel"
-                 "\\documentclass[12pt,twoside]{memoir}
-\\setlength{\\parindent}{2em}
-\\setlength{\\parskip}{0em}
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\OnehalfSpacing
-\\chapterstyle{hangnum}"
+                 "\\documentclass[12pt,twoside]{memoir}"
                  ("\\chapter{%s}" . "\\chapter*{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 #+end_src
-\\usepackage[paperwidth=6in,paperheight=9in,margin=1in]{geometry}
 ** LANGUAGETOOL
 Interfacing with languagetool for spelling and style check.
 I only have this one on my home coputer.
